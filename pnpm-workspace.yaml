@@ -5,7 +5,6 @@ packages:
 onlyBuiltDependencies:
   - "@nestjs/core"
   - "@parcel/watcher"
-  - "@scarf/scarf"
   - "@swc/core"
   - "esbuild"
   - "msgpackr-extract"
