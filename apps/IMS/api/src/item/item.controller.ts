@@ -4,6 +4,7 @@ import {
   ParseFilePipeBuilder, Req, BadRequestException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam, ApiBody } from '@nestjs/swagger';
 import { ITEM_WRITE_SERVICE_TOKEN, IItemWriteService } from './interfaces/i-item.service';
 import { RequirePermission } from '../common/decorators/require-permission.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -42,6 +43,8 @@ function toCamelCase<T extends Record<string, unknown>>(obj: T): T {
   return result as T;
 }
 
+@ApiTags('items')
+@ApiBearerAuth()
 @Controller('items')
 export class ItemController {
   constructor(
@@ -51,6 +54,9 @@ export class ItemController {
   // ── Static routes MUST come before dynamic /:id routes ──────────────────────
 
   @Get('categories')
+  @ApiOperation({ summary: 'List all categories', description: 'Returns a list of all categories, optionally filtered by item type' })
+  @ApiQuery({ name: 'itemType', required: false, enum: ['INGREDIENTS', 'PACKAGING', 'MERCHANDISE', 'SUPPLY', 'MISCELLANEOUS'] })
+  @ApiResponse({ status: 200, description: 'List of categories' })
   @RequirePermission(PERMISSION_CODES.INVENTORY_READ)
   async listCategories(
     @CurrentUser() user: JwtPayload,
@@ -60,6 +66,8 @@ export class ItemController {
   }
 
   @Post('categories')
+  @ApiOperation({ summary: 'Create a new category', description: 'Creates a new item category' })
+  @ApiResponse({ status: 201, description: 'Category created successfully' })
   @RequirePermission(PERMISSION_CODES.ADMIN_TENANTS)
   async createCategory(
     @CurrentUser() user: JwtPayload,
@@ -233,6 +241,10 @@ export class ItemController {
   // ── Collection routes ────────────────────────────────────────────────────────
 
   @Get()
+  @ApiOperation({ summary: 'List par levels (items with inventory levels)', description: 'Returns paginated list of items with their current par levels' })
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Items per page (default: 50)' })
+  @ApiResponse({ status: 200, description: 'Paginated list of items with par levels' })
   @RequirePermission(PERMISSION_CODES.INVENTORY_READ)
   async listParLevels(
     @CurrentUser() user: JwtPayload,
@@ -245,6 +257,9 @@ export class ItemController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new item', description: 'Creates a new inventory item' })
+  @ApiResponse({ status: 201, description: 'Item created successfully' })
+  @ApiResponse({ status: 400, description: 'Validation error' })
   @RequirePermission(PERMISSION_CODES.ADMIN_TENANTS)
   async createItem(
     @CurrentUser() user: JwtPayload,
@@ -264,12 +279,20 @@ export class ItemController {
   // ── Dynamic /:id routes MUST come AFTER all static routes ───────────────────
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get item by ID', description: 'Returns a single item by its ID' })
+  @ApiParam({ name: 'id', description: 'Item UUID' })
+  @ApiResponse({ status: 200, description: 'Item found' })
+  @ApiResponse({ status: 404, description: 'Item not found' })
   @RequirePermission(PERMISSION_CODES.INVENTORY_READ)
   async findById(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
     return this.itemService.findById(asItemId(id), user.restaurantId);
   }
 
   @Put(':id')
+  @ApiOperation({ summary: 'Update an item', description: 'Updates an existing item' })
+  @ApiParam({ name: 'id', description: 'Item UUID' })
+  @ApiResponse({ status: 200, description: 'Item updated successfully' })
+  @ApiResponse({ status: 404, description: 'Item not found' })
   @RequirePermission(PERMISSION_CODES.ADMIN_TENANTS)
   async updateItem(@Param('id') id: string, @Body(new ZodValidationPipe(updateItemSchema)) dto: UpdateItemDto) {
     return this.itemService.updateItem(asItemId(id), dto);

@@ -81,20 +81,20 @@ cached_ingredients
 - [ ] 3.6 pnpm install + turbo build — verify
 
 ### Phase 4: Supabase Unification
-- [ ] 4.0 Create new unified Supabase project
-- [ ] 4.1 Analyze 3 overlapping tables (inventory_ledger, purchase_orders, po_line_items)
-- [ ] 4.2 Merge migrations in chronological order
-- [ ] 4.3 Apply to new project
-- [ ] 4.4 Generate unified TypeScript types
-- [ ] 4.5 Create @synculariti/shared-supabase package
-- [ ] 4.6 Point both apps to new project
+- [x] 4.0 Create new unified Supabase project (aelonqxdhzfafzrfrvtl)
+- [x] 4.1 Analyze 3 overlapping tables (inventory_ledger, purchase_orders, po_line_items → schema separation)
+- [x] 4.2 Merge migrations in chronological order
+- [x] 4.3 Apply to new project (IMS in `ims` schema, ET in `public` schema)
+- [x] 4.4 Generate unified TypeScript types (combined ims+public schemas)
+- [x] 4.5 Create @synculariti/shared-supabase package
+- [x] 4.6 Point both apps to new project (ET .env.local updated)
 - [ ] 4.7 Migrate any needed data
 
 ### Phase 5: Shared Packages
-- [ ] 5.1 @synculariti/shared-utils
-- [ ] 5.2 @synculariti/shared-supabase (refined)
-- [ ] 5.3 @synculariti/shared-ui
-- [ ] 5.4 Incrementally adopt across both apps
+- [x] 5.1 @synculariti/shared-utils — errors, dates, numbers, UUID, HTTP, fetchWithRetry
+- [x] 5.2 @synculariti/shared-supabase — combined types, SSR clients, service-role client
+- [ ] 5.3 @synculariti/shared-ui — pending design system alignment
+- [x] 5.4 Incremental adoption — deleted stale whatsapp-client duplicate in ET lib
 
 ### Phase 6: Styling Unification
 - [ ] 6.1 Add Tailwind v4 to ET
