@@ -57,14 +57,14 @@ cached_ingredients
 ### Phase 1: Scaffold Monorepo (NEXT)
 - [ ] 1.1 Install pnpm if needed
 - [ ] 1.2 Initialize Turborepo in synculariti-core
-- [ ] 1.3 Create apps/IMS/ group folder (no package.json)
+- [ ] 1.3 Create apps/ims/ group folder (no package.json)
 - [ ] 1.4 Create pnpm-workspace.yaml
 - [ ] 1.5 Configure turbo.json
 - [ ] 1.6 pnpm install + verify
 - [ ] 1.7 git commit + push to synculariti-core
 
 ### Phase 2: Add IMS
-- [ ] 2.1 Copy api/ → apps/IMS/api; web/ → apps/IMS/web
+- [ ] 2.1 Copy api/ → apps/ims/api; web/ → apps/ims/web
 - [ ] 2.2 Update package names (@synculariti/ims-api, @synculariti/ims-web)
 - [ ] 2.3 Fix workspace references (@ims/* → @synculariti/*)
 - [ ] 2.4 Copy packages/ to root
