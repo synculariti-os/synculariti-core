@@ -1,0 +1,13 @@
+packages:
+  - "apps/*"
+  - "apps/IMS/*"
+  - "packages/*"
+onlyBuiltDependencies:
+  - "@nestjs/core"
+  - "@parcel/watcher"
+  - "@scarf/scarf"
+  - "@swc/core"
+  - "esbuild"
+  - "msgpackr-extract"
+  - "sharp"
+  - "unrs-resolver"

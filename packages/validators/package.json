@@ -1,0 +1,20 @@
+{
+  "name": "@synculariti/validators",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": "./dist/index.js" },
+  "scripts": { 
+    "build": "tsc",
+    "type-check": "tsc --noEmit", 
+    "test": "vitest run" 
+  },
+  "dependencies": { "zod": "^3.23.8" },
+  "devDependencies": {
+    "@synculariti/config": "workspace:*",
+    "@synculariti/types": "workspace:*",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  }
+}

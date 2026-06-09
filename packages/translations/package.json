@@ -1,0 +1,19 @@
+{
+  "name": "@synculariti/translations",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./locales/*": "./dist/locales/*"
+  },
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@synculariti/config": "workspace:*",
+    "typescript": "^5.6.3"
+  }
+}
