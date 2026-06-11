@@ -51,12 +51,27 @@ const mockUserRepository: IUserRepository = {
   findById: vi.fn(),
   findByEmail: vi.fn(),
   updateLastLogin: vi.fn(),
-  updateProfile: vi.fn(),
+  listAll: vi.fn(),
 };
 
 const mockPermissionRepository: IPermissionRepository = {
   resolvePermissions: vi.fn(),
-  getFranchiseGroupForRestaurant: vi.fn(),
+  // Admin: Roles
+  findAllRoles: vi.fn(),
+  findRoleById: vi.fn(),
+  createRole: vi.fn(),
+  updateRole: vi.fn(),
+  deleteRole: vi.fn(),
+  // Admin: Permissions
+  findAllPermissions: vi.fn(),
+  // Admin: Role-Permissions
+  findAllRolePermissions: vi.fn(),
+  assignPermissionToRole: vi.fn(),
+  removePermissionFromRole: vi.fn(),
+  // Admin: User-Restaurant-Roles
+  findAllUserRestaurantRoles: vi.fn(),
+  assignUserRestaurantRole: vi.fn(),
+  removeUserRestaurantRoleByComposite: vi.fn(),
 };
 
 // ---------------------------------------------------------------------------

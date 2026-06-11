@@ -73,3 +73,6 @@ export const asPurchaseId = (id: string): PurchaseId => id as PurchaseId;
 export const asTransactionId = (id: string): TransactionId => id as TransactionId;
 export const asWhatsAppOutboxId = (id: string): WhatsAppOutboxId => id as WhatsAppOutboxId;
 export const asChartOfAccountId = (id: string): ChartOfAccountId => id as ChartOfAccountId;
+
+// Audit log IDs
+export const asAuditLogId = (id: string): AuditLogId => id as AuditLogId;

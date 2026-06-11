@@ -1,0 +1,22 @@
+[
+  {
+    "file": ".github/workflows/ci.yml",
+    "line": 13,
+    "text": "- name: Collect TODOs"
+  },
+  {
+    "file": ".github/workflows/ci.yml",
+    "line": 15,
+    "text": "- name: Enforce TODO limit"
+  },
+  {
+    "file": ".github/workflows/ci.yml",
+    "line": 18,
+    "text": "echo \"Found $COUNT TODOs\""
+  },
+  {
+    "file": ".github/workflows/ci.yml",
+    "line": 20,
+    "text": "echo \"❌ Too many TODOs ($COUNT) – reduce technical debt before merging\""
+  }
+]

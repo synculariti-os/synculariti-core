@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Kysely, sql } from 'kysely';
 import crypto from 'crypto';
-import { Database, Json, UserId, RestaurantId, FranchiseGroupId } from '@synculariti/types';
+import { Database, Json, UserId, RestaurantId, FranchiseGroupId, asAuditLogId } from '@synculariti/types';
 import { IAuditService } from './interfaces/i-audit.service';
 
 @Injectable()
@@ -82,7 +82,7 @@ export class AuditService implements IAuditService {
       await this.db
         .insertInto('audit_log')
         .values({
-          id: crypto.randomUUID(),
+          id: asAuditLogId(crypto.randomUUID()),
           user_id: params.userId as UserId | null,
           user_email: params.userEmail,
           action: params.action,
