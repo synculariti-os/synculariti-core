@@ -2,6 +2,12 @@ packages:
   - "apps/*"
   - "apps/ims/*"
   - "packages/*"
+allowBuilds:
+  '@nestjs/core': true
+  '@parcel/watcher': true
+  '@scarf/scarf': true
+  '@swc/core': true
+  msgpackr-extract: true
 onlyBuiltDependencies:
   - "@nestjs/core"
   - "@parcel/watcher"

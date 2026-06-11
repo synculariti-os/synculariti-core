@@ -90,11 +90,11 @@ export async function ActionPageLoader({ actionId }: { actionId: string }) {
   //    The user received this link via WhatsApp — the outbox ID is an unguessable UUID.
   //    Security is enforced by verifying tenant membership below.
   const serviceClient = createServiceClient();
-  const { data: record, error: outboxErr } = await serviceClient
+  const { data: record, error: outboxErr } = await (serviceClient
     .from('whatsapp_outbox')
     .select('*, tenants!inner(name, id)')
     .eq('id', actionId)
-    .single();
+    .single() as any) as { data: { tenants: { id: string; name: string }; status: string; payload: any } | null; error: any };
 
   if (outboxErr || !record) {
     const errCode = (outboxErr as { code?: string })?.code || 'N/A';
@@ -121,7 +121,7 @@ export async function ActionPageLoader({ actionId }: { actionId: string }) {
   const { data: member, error: memberErr } = await serviceClient
     .from('tenant_members')
     .select('id, role')
-    .eq('tenant_id', record.tenants.id)
+    .eq('tenant_id', record.tenants!.id)
     .eq('email', userEmail)
     .maybeSingle();
 

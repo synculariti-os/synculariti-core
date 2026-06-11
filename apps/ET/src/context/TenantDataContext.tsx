@@ -38,7 +38,7 @@ export function TenantDataProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      const { data: bundle, error } = await supabase.rpc('get_tenant_bundle');
+      const { data: bundle, error } = await (supabase.rpc('get_tenant_bundle') as any) as { data: { tenant: any; locations: any[] } | null; error: any };
       
       if (error) throw error;
       if (!bundle || !bundle.tenant) return;

@@ -61,11 +61,11 @@ export async function POST(req: Request) {
     }
 
     // 4. Find tenant by PIN
-    const { data: lookup, error: lErr } = await supabaseAdmin.rpc('verify_tenant_access', { 
+    const { data: lookup, error: lErr } = await (supabaseAdmin.rpc('verify_tenant_access', { 
       input_code: pin 
-    });
+    }) as any) as { data: { target_id: string; target_name: string }[] | null; error: any };
 
-    const lookupArray = lookup as { target_id: string; target_name: string }[] | null;
+    const lookupArray = lookup;
 
     if (lErr || !lookupArray || lookupArray.length === 0) {
       return NextResponse.json({ 

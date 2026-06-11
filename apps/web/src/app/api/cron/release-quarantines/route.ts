@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createServiceRoleClient } from '@synculariti/shared-supabase';
 import { timingSafeEqual } from '@/lib/utils';
 
 export const runtime = 'nodejs';
@@ -11,11 +11,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-      { auth: { autoRefreshToken: false, persistSession: false } },
-    );
+    const supabase = createServiceRoleClient();
 
     const { data, error } = await supabase.rpc('release_expired_quarantines_v1');
     if (error) throw error;

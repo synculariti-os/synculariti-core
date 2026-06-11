@@ -23,11 +23,12 @@ const handler: SecureHandler = async (req, context) => {
   const format = searchParams.get('format') || 'csv';
 
   // tenant_id is resolved server-side from the session, never from URL params
-  const { data: transactions, error } = await supabase
+  const result = await supabase
     .from('transactions')
     .select('date, description, category, amount, who, currency, transaction_type')
     .eq('is_deleted', false)
     .order('date', { ascending: false });
+  const { data: transactions, error } = result as { data: any[]; error: any };
 
   if (error) {
     await ServerLogger.system('ERROR', 'API', 'Export query failed', { error: error.message, tenantId });

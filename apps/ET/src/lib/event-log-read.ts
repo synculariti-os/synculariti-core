@@ -36,17 +36,19 @@ export function useEventLog(
     setLoading(true);
     setError(null);
 
-    let query = supabase
-      .from('event_log')
+    let query = (supabase
+      .from('event_log' as any)
       .select('*')
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending })
-      .limit(limit);
+      .limit(limit) as any);
 
     if (entityType) query = query.eq('entity_type', entityType);
     if (entityId)   query = query.eq('entity_id', entityId);
 
-    query.then(async ({ data, error: qError }) => {
+    query.then(async (res: any) => {
+      const data = res.data;
+      const qError = res.error;
       if (cancelled) return;
 
       if (qError) {

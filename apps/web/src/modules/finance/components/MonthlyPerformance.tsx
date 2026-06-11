@@ -43,8 +43,8 @@ export function MonthlyPerformance({
   const prevYear = month === 1 ? year - 1 : year;
   const prevPrefix = `${prevYear}-${String(prevMonth).padStart(2, '0')}`;
 
-  const currentMonthTx = transactions.filter(t => t.date?.startsWith(currentPrefix) && t.category !== 'Savings' && t.category !== 'Adjustment');
-  const prevMonthTx = transactions.filter(t => t.date?.startsWith(prevPrefix) && t.category !== 'Savings' && t.category !== 'Adjustment');
+  const currentMonthTx = transactions.filter(t => t.transaction_date?.startsWith(currentPrefix) && t.category !== 'Savings' && t.category !== 'Adjustment');
+  const prevMonthTx = transactions.filter(t => t.transaction_date?.startsWith(prevPrefix) && t.category !== 'Savings' && t.category !== 'Adjustment');
   const currentTotal = currentMonthTx.reduce((acc, t) => acc + safeAmount(t.amount), 0);
 
   const prevTotal = prevMonthTx.reduce((acc, t) => acc + safeAmount(t.amount), 0);

@@ -73,7 +73,7 @@ export function useTransactionFilter({ transactions }: UseTransactionFilterProps
         comparison = aDate - bDate;
       } else {
         // Default: date
-        comparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+        comparison = new Date(a.date || a.transaction_date).getTime() - new Date(b.date || b.transaction_date).getTime();
       }
 
       return sortOrder === 'asc' ? comparison : -comparison;

@@ -18,14 +18,16 @@ export function NavBarContent() {
 
   useEffect(() => {
     if (!tenant?.tenant_id) return;
-    supabase
+    const client = supabase as any;
+    client
       .from('transactions')
       .select('date')
       .eq('tenant_id', tenant.tenant_id)
       .eq('is_deleted', false)
       .order('date', { ascending: true })
       .limit(1)
-      .then(({ data }) => {
+      .then((res: any) => {
+        const data = res.data;
         if (data?.[0]?.date) {
           setEarliestTxDate(data[0].date);
         }

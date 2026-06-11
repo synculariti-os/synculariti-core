@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+    const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
     if (tenantErr || !tenantId) {
       return NextResponse.json({ error: 'Tenant not found' }, { status: 403 });
     }
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+    const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
     if (tenantErr || !tenantId) {
       return NextResponse.json({ error: 'Tenant not found' }, { status: 403 });
     }

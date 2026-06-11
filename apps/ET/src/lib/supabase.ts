@@ -1,9 +1,8 @@
-import { createBrowserClient } from '@supabase/ssr';
+import { createBrowserSupabaseClient } from '@synculariti/shared-supabase';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+export const supabase = createBrowserSupabaseClient();
 
-export const supabase = createBrowserClient(
-  supabaseUrl, 
-  supabaseAnonKey
-);
+// E2E test hook
+if (typeof window !== 'undefined' && !(window as any).__supabase) {
+  (window as any).__supabase = supabase;
+}

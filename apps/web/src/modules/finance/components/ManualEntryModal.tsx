@@ -16,7 +16,7 @@ export interface ManualEntryPayload {
   category: string;
   who_id: string;
   who: string;
-  date: string;
+  transaction_date: string;
   recurring_id?: string;
 }
 
@@ -112,8 +112,8 @@ export function ManualEntryModal({ prefill, tenant, selectedUser, onSave, onAddC
               <input
                 style={inputStyle}
                 type="date"
-                value={form.date}
-                onChange={e => form.setDate(e.target.value)}
+              value={form.transaction_date}
+              onChange={e => form.setTransaction_date(e.target.value)}
               />
             </div>
           </div>

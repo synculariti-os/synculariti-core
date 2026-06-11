@@ -29,7 +29,7 @@ export function useInventory(tenantId: string | undefined) {
       const [itemsRes, catsRes, stockRes] = await Promise.all([
         supabase.from('inventory_items').select('*').eq('tenant_id', tenantId).order('name'),
         supabase.from('inventory_categories').select('*').eq('tenant_id', tenantId).order('name'),
-        supabase.from('current_inventory').select('*').eq('tenant_id', tenantId)
+        (supabase as any).from('current_inventory').select('*').eq('tenant_id', tenantId)
       ]);
 
       if (itemsRes.data) setItems(itemsRes.data);

@@ -77,7 +77,7 @@ export function calcMonthDelta(
   const prevMonth = prevYear + '-' + (prevMonthNum < 10 ? '0' + prevMonthNum : '' + prevMonthNum);
 
   const prevTotal = allTransactions.reduce((sum, e) => {
-    if (e.date && e.date.startsWith(prevMonth) && !isSavings(e) && !isAdjustment(e)) {
+    if (e.transaction_date && e.transaction_date.startsWith(prevMonth) && !isSavings(e) && !isAdjustment(e)) {
       return sum + (safeAmount(e.amount));
     }
     return sum;

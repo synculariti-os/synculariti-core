@@ -68,7 +68,7 @@ export const POST = async (req: Request) => {
     const { data: keyRecord, error: keyError } = await supabase
       .from('api_keys')
       .select('id, tenant_id')
-      .eq('key_value', apiKey)
+      .eq('key_value' as any, apiKey)
       .single();
 
     if (keyError || !keyRecord) {

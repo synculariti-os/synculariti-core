@@ -23,15 +23,15 @@ export async function resolveFixtures(): Promise<TestFixtures> {
   if (!tenants?.length) return { tenantId: null, locationId: null, accountId: null };
   const tenantId = tenants[0].id;
 
-  const { data: locations } = await supabase.from('locations').select('id').eq('tenant_id', tenantId).limit(1);
+  const { data: locations } = await (supabase.from('locations' as any).select('id').eq('franchise_group_id', tenantId).limit(1) as any);
   const locationId = locations?.length ? locations[0].id : null;
 
-  const { data: accounts } = await supabase
+  const { data: accounts } = await (supabase
     .from('chart_of_accounts')
     .select('id')
-    .eq('tenant_id', tenantId)
-    .eq('account_code', 'COGS-001')
-    .limit(1);
+    .eq('tenant_id', tenantId!)
+    .eq('code', 'COGS-001')
+    .limit(1) as any);
   const accountId = accounts?.length ? accounts[0].id : null;
 
   return { tenantId, locationId, accountId };
@@ -65,5 +65,5 @@ export function uniqueGapDate(): string {
  * Cleanup helper: deletes all rows matching a filter.
  */
 export async function cleanWhere(table: string, column: string, value: string): Promise<void> {
-  await supabase.from(table).delete().eq(column, value);
+  await (supabase.from(table as any).delete().eq(column, value) as any);
 }

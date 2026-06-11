@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ['@synculariti/whatsapp-client'],
+  transpilePackages: [
+    '@synculariti/types',
+    '@synculariti/validators',
+    '@synculariti/translations',
+    '@synculariti/whatsapp-client',
+    '@synculariti/shared-utils',
+    '@synculariti/shared-supabase',
+  ],
   async rewrites() {
     return [
       {

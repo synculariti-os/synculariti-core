@@ -56,7 +56,7 @@ export interface TransactionSyncPayload {
   txId: string;
   tenantId: string;
   amount: number;
-  date: string;
+  transaction_date: string;
   category?: string;
   dayOfWeek: number;
   isWeekend: boolean;

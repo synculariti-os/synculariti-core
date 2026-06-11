@@ -4,8 +4,8 @@ export interface Transaction {
   amount: number | string;
   category: string;      // The display text (Snapshot/Legacy)
   category_id?: string;  // The stable ID (Modern)
-  account_id?: string;   // CoA ID (Synculariti Finance)
-  date: string;
+  account_id?: string;  // CoA ID (Synculariti Finance)
+  transaction_date: string;
   who?: string;
   who_id?: string;
   description?: string;

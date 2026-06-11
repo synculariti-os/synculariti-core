@@ -74,7 +74,7 @@ export function useTransactionSync(tenantId: string | undefined) {
     whoName: string, 
     locationId?: string, 
     currency: string = 'EUR'
-  ) => {
+  ): Promise<string> => {
     if (!tenantId) throw new Error('No tenant ID');
 
     const selectedItems = receipt.items.filter(i => i.selected);
@@ -83,7 +83,7 @@ export function useTransactionSync(tenantId: string | undefined) {
     if (OfflineQueue.isOffline()) {
       await OfflineQueue.enqueue(QUEUE_SAVE_RECEIPT, { receipt, whoId, whoName, locationId, currency });
       triggerRefresh();
-      return;
+      return 'queued';
     }
 
     const catCounts: Record<string, number> = {};
@@ -135,7 +135,7 @@ export function useTransactionSync(tenantId: string | undefined) {
         void recordEvent({ action: 'receipt.scanned', whoId, description: `Scanned receipt from ${receipt.store} (${formatCurrency(totalAmount)})`, entityId: transactionId, entityType: 'transaction' });
         triggerRefresh();
 
-        return data;
+        return data as string;
       } catch (err: unknown) {
         lastError = err;
         attempt++;

@@ -7,6 +7,10 @@ export * from './domain/recipe';
 export * from './domain/inventory';
 export * from './domain/sales';
 export * from './domain/settings';
+export * from './domain/finance';
+export * from './domain/purchases';
+export * from './domain/whatsapp';
+export * from './domain/pos';
 export * from './constants/index';
 export * from './database.types';
 

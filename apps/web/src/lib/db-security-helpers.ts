@@ -17,10 +17,10 @@ if (fs.existsSync(envPath)) {
 export const supabase = createServiceClient();
 
 export async function checkFunctionSecurity(name: string, args: string): Promise<FunctionSecurityState> {
-  const { data, error } = await supabase.rpc(RPC_GET_SECURITY_STATE, {
+  const { data, error } = await (supabase.rpc(RPC_GET_SECURITY_STATE, {
     p_func_name: name,
     p_args_signature: args
-  });
+  }) as any) as { data: { func_exists: boolean; has_search_path_public: boolean; is_revoked_from_public: boolean }[] | null; error: any };
   if (error) throw new Error(`Supabase RPC error: ${error.message}`);
   if (!data || data.length === 0) {
     return { exists: false, hasSearchPathPublic: false, isRevokedFromPublic: false };
@@ -33,12 +33,12 @@ export async function checkFunctionSecurity(name: string, args: string): Promise
 }
 
 export async function tableExists(tableName: string): Promise<boolean> {
-  const { error } = await supabase.from(tableName).select('id').limit(1);
+  const { error } = await (supabase.from(tableName as any).select('id').limit(1) as any);
   return !error;
 }
 
 export async function columnExists(tableName: string, columnName: string): Promise<boolean> {
-  const { error } = await supabase.from(tableName).select(columnName).limit(1);
+  const { error } = await (supabase.from(tableName as any).select(columnName).limit(1) as any);
   return !error;
 }
 
@@ -58,6 +58,6 @@ export async function getTableRlsStatus(tableName: string): Promise<boolean | nu
 }
 
 export async function viewExists(viewName: string): Promise<boolean> {
-  const { error } = await supabase.from(viewName).select('id').limit(1);
+  const { error } = await (supabase.from(viewName as any).select('id').limit(1) as any);
   return !error;
 }

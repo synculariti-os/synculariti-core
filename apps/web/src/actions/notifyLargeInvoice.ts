@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase-server';
 import { Logger } from '@/lib/logger';
 import { recordEventServer } from '@/lib/event-log-server';
 import { getErrorMessage, formatCurrency, safeAmount } from '@/lib/utils';
+import type { TenantConfig } from '@/modules/whatsapp/types';
 
 interface InvoiceItem {
   id?: string;
@@ -31,12 +32,13 @@ export async function notifyLargeInvoice(
       .eq('id', tenantId)
       .single();
 
-    if (tenantErr || !tenantData?.config?.phones?.owner) {
+    const cfg = tenantData?.config as TenantConfig | null;
+    if (tenantErr || !cfg?.phones?.owner) {
       Logger.system('WARN', 'WhatsApp', 'Owner phone not configured for tenant', { tenantId });
       return { success: true, sent: false, error: 'No owner phone configured' };
     }
 
-    const ownerPhone = tenantData.config.phones.owner;
+    const ownerPhone = cfg!.phones!.owner;
     const lines = largeItems.map(i =>
       `• ${formatCurrency(safeAmount(i.amount))} — ${i.description || i.merchant || 'Manual entry'} (${i.category || 'Uncategorized'}) by ${i.who || 'Unknown'} on ${i.date || 'today'}`
     ).join('\n');

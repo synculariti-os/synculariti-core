@@ -60,13 +60,13 @@ export function useEventCreation(
 
     Promise.all(
       chunks.map(chunk =>
-        supabase
-          .from('event_log')
+        (supabase
+          .from('event_log' as any)
           .select('*')
           .eq('tenant_id', tenantId)
           .eq('entity_type', entityType)
           .in('entity_id', chunk)
-          .order('created_at', { ascending: true })
+          .order('created_at', { ascending: true }) as any)
       )
     ).then(async results => {
       if (cancelled) return;

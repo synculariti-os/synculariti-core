@@ -32,7 +32,7 @@ export function withAuth(handler: SecureHandler) {
       }
 
       // Resolve tenant from RPC — canonical, RLS-enforced, not from client
-      const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+      const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
 
       if (tenantErr || !tenantId) {
         await ServerLogger.system('ERROR', 'Auth', 'Tenant resolution failed in withAuth', {

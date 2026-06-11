@@ -33,13 +33,13 @@ const handler: SecureHandler = async (req, context) => {
     await ServerLogger.system('INFO', 'Debug', 'Manual Neo4j Sync Triggered', { tenantId, admin: user.email });
 
     // 1. Fetch PENDING events from Postgres outbox
-    const { data: events, error: fetchError } = await supabase
+    const { data: events, error: fetchError } = await (supabase
       .from('graph_sync_queue')
       .select('id, payload, operation, tenant_id, entity_id, retry_count, max_retries')
       .eq('status', 'PENDING')
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: true })
-      .limit(50);
+      .limit(50) as any);
 
     if (fetchError) {
       throw new Error(`Failed to fetch outbox events: ${fetchError.message}`);
@@ -68,21 +68,21 @@ const handler: SecureHandler = async (req, context) => {
           processedCount++;
         } else {
           // Fetch full transaction row to get latest state
-          const { data: txRow, error: txError } = await supabase
+          const { data: txRow, error: txError } = await (supabase
             .from('transactions')
             .select('id, amount, date, category, who, description, currency, tenant_id')
             .eq('id', event.entity_id)
-            .single();
+            .single() as any);
 
           if (txError || !txRow) {
             throw new Error(`Transaction row missing: ${txError?.message || 'Not Found'}`);
           }
 
           // Fetch receipt items
-          const { data: itemsRows, error: itemsError } = await supabase
+          const { data: itemsRows, error: itemsError } = await (supabase
             .from('receipt_items')
             .select('id, name, amount, category, currency')
-            .eq('transaction_id', event.entity_id);
+            .eq('transaction_id', event.entity_id) as any);
 
           if (itemsError) {
             throw new Error(`Failed to fetch receipt items: ${itemsError.message}`);

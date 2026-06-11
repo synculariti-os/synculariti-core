@@ -25,9 +25,9 @@ export function useIdentity(session: Session | null) {
     if (!session?.user?.email) return [];
     
     try {
-      const { data, error } = await supabase.rpc('get_my_available_tenants');
+      const { data, error } = await (supabase as any).rpc('get_my_available_tenants');
       if (error) throw error;
-      setTenants(data || []);
+      setTenants((data as AvailableTenant[]) || []);
       return (data as AvailableTenant[]) || [];
     } catch (e: unknown) {
       const msg = getErrorMessage(e);

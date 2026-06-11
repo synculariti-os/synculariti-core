@@ -42,7 +42,7 @@ export function MarketTrends({ transactions, selectedMonth, colSpan = 8 }: { tra
   const dataPoints = last6Months.map(m => {
     return transactions
       .filter(t => {
-        const d = new Date(t.date || '');
+        const d = new Date(t.transaction_date || '');
         return d.getMonth() === m.month && d.getFullYear() === m.year;
       })
       .reduce((acc, curr) => acc + safeAmount(curr.amount), 0);

@@ -22,10 +22,10 @@ export function ChartOfAccounts({ tenantId }: { tenantId: string }) {
 
   const fetchAccounts = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase
         .from('chart_of_accounts')
         .select('*')
-        .order('account_code');
+        .order('code' as any) as any);
       
       if (error) throw error;
       setAccounts(data || []);

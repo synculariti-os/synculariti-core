@@ -23,11 +23,11 @@ export const GET = async (req: Request) => {
 
     const supabase = createServiceClient()
 
-    const { data: keyRecord, error: keyError } = await supabase
+    const { data: keyRecord, error: keyError } = await (supabase
       .from('api_keys')
       .select('id, tenant_id')
-      .eq('key_value', apiKey)
-      .single()
+      .eq('key_value' as any, apiKey)
+      .single() as any)
 
     if (keyError || !keyRecord) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

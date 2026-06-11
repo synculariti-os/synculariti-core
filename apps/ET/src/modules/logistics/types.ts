@@ -1,10 +1,10 @@
 export interface InventoryItem {
-  id: string;
+  id: string | null;
   tenant_id: string;
   category_id: string;
-  sku: string;
+  sku: string | null;
   name: string;
-  type: 'RAW' | 'PREP' | 'SERVICE';
+  type: string;
   purchasing_uom: string;
   inventory_uom: string;
   conversion_factor: number;
@@ -14,11 +14,17 @@ export interface InventoryItem {
 }
 
 export interface InventoryCategory {
-  id: string;
+  id: string | null;
   tenant_id: string;
   name: string;
-  description: string;
+  description: string | null;
+  sort_order?: number;
+  is_active?: boolean;
   created_at: string;
+  updated_at?: string;
+  deleted_at?: string | null;
+  item_type?: string | null;
+  category_group?: string | null;
 }
 
 export interface PurchaseOrder {

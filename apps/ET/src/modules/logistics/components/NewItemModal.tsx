@@ -89,7 +89,7 @@ export function NewItemModal({
               value={formData.category_id}
               onChange={e => setFormData({...formData, category_id: e.target.value})}
             >
-              {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              {categories.map(c => <option key={c.id || ''} value={c.id || ''}>{c.name}</option>)}
               {categories.length === 0 && <option value="">No categories defined</option>}
             </select>
           </div>

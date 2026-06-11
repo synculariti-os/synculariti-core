@@ -10,7 +10,7 @@ export function buildMerchantId(name: string): string {
 interface TransactionRow {
   id: string;
   amount: number | string;
-  date: string;
+  transaction_date: string;
   category?: string | null;
   description?: string | null;
   who?: string | null;
@@ -63,13 +63,13 @@ export function buildSyncPayload(
     category = inferCategory(items);
   }
 
-  const enrichment = enrichDate(txRow.date);
+  const enrichment = enrichDate(txRow.transaction_date);
 
   return {
     txId: txRow.id,
     tenantId: txRow.tenant_id,
     amount: safeAmount(txRow.amount),
-    date: txRow.date,
+    transaction_date: txRow.transaction_date,
     category,
     ...enrichment,
     vendorName,

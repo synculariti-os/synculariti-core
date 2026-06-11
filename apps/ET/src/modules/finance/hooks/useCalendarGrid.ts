@@ -42,7 +42,7 @@ export function useCalendarGrid(transactions: Transaction[], baseDate: Date = ne
     let maxDailySpend = 0;
 
     for (const tx of transactions) {
-      const d = new Date(tx.date);
+      const d = new Date(tx.date || tx.transaction_date);
       // Only include transactions that match the month/year of the baseDate
       if (d.getMonth() === month && d.getFullYear() === year) {
         const day = d.getDate();

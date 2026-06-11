@@ -12,7 +12,7 @@ export function ItemCatalog({ items, onAddItem }: {
 
   const filteredItems = items.filter(item => 
     item.name.toLowerCase().includes(search.toLowerCase()) || 
-    item.sku.toLowerCase().includes(search.toLowerCase())
+    item.sku?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

@@ -33,12 +33,12 @@ const handler: SecureHandler = async (req, context) => {
     await ServerLogger.system('INFO', 'Debug', 'Manual Neo4j Backfill Triggered', { tenantId, admin: user.email });
 
     // 1. Fetch all transactions for the tenant
-    const { data: transactions, error: txsError } = await supabase
-      .from('transactions')
+    const { data: transactions, error: txsError } = await (supabase
+      .from('transactions' as any)
       .select('id, amount, date, category, who, description, currency, tenant_id')
       .eq('tenant_id', tenantId)
       .eq('is_deleted', false)
-      .order('date', { ascending: true });
+      .order('date', { ascending: true }) as any);
 
     if (txsError) {
       throw new Error(`Failed to fetch transactions: ${txsError.message}`);
@@ -49,18 +49,18 @@ const handler: SecureHandler = async (req, context) => {
     }
 
     // 2. Fetch all receipt items for this tenant
-    const { data: itemsRows, error: itemsError } = await supabase
-      .from('receipt_items')
+    const { data: itemsRows, error: itemsError } = await (supabase
+      .from('receipt_items' as any)
       .select('id, transaction_id, name, amount, category, currency')
-      .eq('tenant_id', tenantId);
+      .eq('tenant_id', tenantId) as any);
 
     if (itemsError) {
       throw new Error(`Failed to fetch receipt items: ${itemsError.message}`);
     }
 
     // Group items by transaction_id
-    const itemsByTx: Record<string, typeof itemsRows> = {};
-    for (const item of itemsRows || []) {
+    const itemsByTx: Record<string, any[]> = {};
+    for (const item of (itemsRows || []) as any[]) {
       if (item.transaction_id) {
         if (!itemsByTx[item.transaction_id]) {
           itemsByTx[item.transaction_id] = [];
@@ -70,8 +70,8 @@ const handler: SecureHandler = async (req, context) => {
     }
 
     // 3. Map into TransactionSyncPayload
-    const payloadsToSync: TransactionSyncPayload[] = transactions.map(txRow =>
-      buildSyncPayload(txRow, itemsByTx[txRow.id] || [])
+    const payloadsToSync: TransactionSyncPayload[] = (transactions as any[]).map(txRow =>
+      buildSyncPayload(txRow, (itemsByTx as any)[txRow.id] || [])
     );
 
     // 4. Run bulk sync using flat-memory cursor slide

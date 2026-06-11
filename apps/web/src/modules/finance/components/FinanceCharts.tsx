@@ -76,7 +76,7 @@ export function DailyTrend({ transactions }: { transactions: Transaction[] }) {
   // Aggregate spend by day
   const daily = transactions.reduce((acc: Record<string, number>, t) => {
     if (t.category === 'Savings' || t.category === 'Adjustment') return acc;
-    const day = t.date?.slice(8, 10) || '01'; // DD
+    const day = t.transaction_date?.slice(8, 10) || '01'; // DD
     acc[day] = (acc[day] || 0) + safeAmount(t.amount);
     return acc;
   }, {});

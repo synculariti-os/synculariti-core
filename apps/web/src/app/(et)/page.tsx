@@ -51,7 +51,7 @@ function DashboardContent() {
       ...tx,
       who_id: whoId,
       who: whoName,
-      date: tx.date || new Date().toISOString().slice(0, 10),
+      transaction_date: tx.date || new Date().toISOString().slice(0, 10),
     }));
     await addTransaction(payload);
   };
@@ -87,13 +87,13 @@ function DashboardContent() {
 
   const isDemo = transactions.length === 0;
   const demoTransactions = isDemo ? [
-    { id: 'd1', amount: 450.00, category: 'Food Costs', who: 'System', date: selectedMonth + '-01', note: 'Demo: Bulk Produce' },
-    { id: 'd2', amount: 1200.00, category: 'Labor & Wages', who: 'System', date: selectedMonth + '-05', note: 'Demo: Payroll' },
-    { id: 'd3', amount: 200.00, category: 'Utilities', who: 'System', date: selectedMonth + '-10', note: 'Demo: Electricity' }
+    { id: 'd1', amount: 450.00, category: 'Food Costs', who: 'System', transaction_date: selectedMonth + '-01', note: 'Demo: Bulk Produce' },
+    { id: 'd2', amount: 1200.00, category: 'Labor & Wages', who: 'System', transaction_date: selectedMonth + '-05', note: 'Demo: Payroll' },
+    { id: 'd3', amount: 200.00, category: 'Utilities', who: 'System', transaction_date: selectedMonth + '-10', note: 'Demo: Electricity' }
   ] : [];
 
   const activeTransactions = isDemo ? demoTransactions : transactions;
-  const displayTransactions = activeTransactions.filter(t => t.date?.startsWith(selectedMonth));
+  const displayTransactions = activeTransactions.filter(t => t.transaction_date?.startsWith(selectedMonth));
 
   if (Object.keys(tenant.names || {}).length === 0) {
     return (

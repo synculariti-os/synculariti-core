@@ -55,13 +55,13 @@ export class Logger {
     metadata: Record<string, unknown> = {}
   ) {
     try {
-      await supabase.from('activity_log').insert({
+      await (supabase.from('activity_log' as any).insert({
         tenant_id: tenantId,
         action,
         description,
         actor_name: actorName,
         metadata
-      });
+      }) as any);
     } catch (e: unknown) {
       this.system('ERROR', 'Sync', 'Failed to write user activity log', { error: getErrorMessage(e) }, tenantId);
     }

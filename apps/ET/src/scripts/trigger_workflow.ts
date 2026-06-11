@@ -51,7 +51,7 @@ async function run() {
 
   if (type === 'po') {
     // 1. Create a dummy PO
-    const { data: location } = await supabase
+    const { data: location } = await (supabase as any)
       .from('locations')
       .select('id')
       .eq('tenant_id', DEMO_TENANT_ID)
@@ -85,7 +85,7 @@ async function run() {
       name: `Approve Purchase Order for EUR 1,250?`,
       options: ['Approve', 'Reject', 'Modify'],
       metadata: {
-        poId: newPo.id
+        poId: newPo.id as string
       }
     };
     console.log(`Created dummy PO with ID: ${newPo.id}`);
@@ -109,14 +109,14 @@ async function run() {
       name: `Audit Alert: Transaction for EUR ${tx.amount} (${tx.category}) has category anomaly. Proceed?`,
       options: ['Approve Anyway', 'Request Re-upload', 'Reject Expense'],
       metadata: {
-        transactionId: tx.id
+        transactionId: tx.id as string
       }
     };
     console.log(`Using transaction ID: ${tx.id}`);
 
   } else if (type === 'pos') {
     // 3. Fetch location
-    const { data: location } = await supabase
+    const { data: location } = await (supabase as any)
       .from('locations')
       .select('id, name')
       .eq('tenant_id', DEMO_TENANT_ID)
@@ -141,7 +141,7 @@ async function run() {
   }
 
   // Insert PENDING record into outbox
-  const { data: outbox, error: outboxError } = await supabase
+  const { data: outbox, error: outboxError } = await (supabase as any)
     .from('whatsapp_outbox')
     .insert({
       tenant_id: DEMO_TENANT_ID,

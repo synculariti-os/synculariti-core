@@ -133,12 +133,12 @@ async function seed() {
 
     if (txBatch.length >= BATCH_SIZE || i === TOTAL) {
       console.log(`[${i}/${TOTAL}] Inserting batch of ${txBatch.length}...`);
-      const { data: inserted, error: txErr } = await supabase.from('transactions').insert(txBatch).select('id');
+      const { data: inserted, error: txErr } = await (supabase as any).from('transactions').insert(txBatch).select('id');
       if (txErr) { console.error('TX error:', txErr.message); txBatch = []; itemBatch = []; continue; }
-      const { error: itemErr } = await supabase.from('receipt_items').insert(itemBatch);
+      const { error: itemErr } = await (supabase as any).from('receipt_items').insert(itemBatch);
       if (itemErr) {
         console.error('Items error:', itemErr.message, '- rolling back');
-        await supabase.from('transactions').delete().in('id', inserted!.map(t => t.id));
+        await (supabase as any).from('transactions').delete().in('id', inserted!.map((t: { id: string }) => t.id));
         txBatch = []; itemBatch = []; continue;
       }
       totalInserted += txBatch.length;

@@ -58,7 +58,7 @@ export function ItemAnalytics({ tenantId, selectedMonth, isDemo = false }: { ten
             date
           )
         `)
-        .eq('tenant_id', tenantId);
+        .eq('tenant_id', tenantId!);
 
       if (selectedMonth) {
         const monthStart = selectedMonth + '-01';

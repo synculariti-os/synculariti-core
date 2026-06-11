@@ -29,12 +29,12 @@ export function useInventory(tenantId: string | undefined) {
       const [itemsRes, catsRes, stockRes] = await Promise.all([
         supabase.from('inventory_items').select('*').eq('tenant_id', tenantId).order('name'),
         supabase.from('inventory_categories').select('*').eq('tenant_id', tenantId).order('name'),
-        supabase.from('current_inventory').select('*').eq('tenant_id', tenantId)
+        (supabase.from('current_inventory' as any).select('*').eq('tenant_id', tenantId) as any)
       ]);
 
-      if (itemsRes.data) setItems(itemsRes.data);
-      if (catsRes.data) setCategories(catsRes.data);
-      if (stockRes.data) setStock(stockRes.data);
+      if (itemsRes.data) setItems(itemsRes.data as InventoryItem[]);
+      if (catsRes.data) setCategories(catsRes.data as InventoryCategory[]);
+      if (stockRes.data) setStock(stockRes.data as CurrentInventory[]);
 
     } catch (err: unknown) {
       Logger.system('ERROR', 'Logistics', 'Failed to fetch inventory state', { 

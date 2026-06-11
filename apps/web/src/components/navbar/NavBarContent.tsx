@@ -20,12 +20,13 @@ export function NavBarContent() {
     if (!tenant?.tenant_id) return;
     getSupabase()
       .from('transactions')
-      .select('date')
+      .select('date' as any)
       .eq('tenant_id', tenant.tenant_id)
-      .eq('is_deleted', false)
-      .order('date', { ascending: true })
+      .eq('is_deleted' as any, false)
+      .order('date' as any, { ascending: true })
       .limit(1)
-      .then(({ data }: { data: any[] }) => {
+      .then((res: any) => {
+        const data = res.data;
         if (data?.[0]?.date) {
           setEarliestTxDate(data[0].date);
         }

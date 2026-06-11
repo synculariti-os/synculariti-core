@@ -73,7 +73,7 @@ export function TransactionRow({ tx, onDelete, onEdit, creationEvent }: Transact
             </span>
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-secondary)', display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span>{formatDate(tx.date)}</span>
+            <span>{formatDate(tx.date || tx.transaction_date)}</span>
             {tx.who && <><span>·</span><span>{tx.who}</span></>}
             {creationEvent && <><span aria-hidden>·</span><EventByline event={creationEvent} prefix="Added by" /></>}
           </div>

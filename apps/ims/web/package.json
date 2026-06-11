@@ -14,6 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
     "@synculariti/translations": "workspace:*",
+    "@synculariti/shared-supabase": "workspace:*",
     "@synculariti/types": "workspace:*",
     "@synculariti/validators": "workspace:*",
     "@supabase/ssr": "^0.10.3",

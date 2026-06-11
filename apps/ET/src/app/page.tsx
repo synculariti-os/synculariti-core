@@ -87,9 +87,9 @@ function DashboardContent() {
 
   const isDemo = transactions.length === 0;
   const demoTransactions = isDemo ? [
-    { id: 'd1', amount: 450.00, category: 'Food Costs', who: 'System', date: selectedMonth + '-01', note: 'Demo: Bulk Produce' },
-    { id: 'd2', amount: 1200.00, category: 'Labor & Wages', who: 'System', date: selectedMonth + '-05', note: 'Demo: Payroll' },
-    { id: 'd3', amount: 200.00, category: 'Utilities', who: 'System', date: selectedMonth + '-10', note: 'Demo: Electricity' }
+    { id: 'd1', amount: 450.00, category: 'Food Costs', who: 'System', date: selectedMonth + '-01', transaction_date: selectedMonth + '-01', note: 'Demo: Bulk Produce' },
+    { id: 'd2', amount: 1200.00, category: 'Labor & Wages', who: 'System', date: selectedMonth + '-05', transaction_date: selectedMonth + '-05', note: 'Demo: Payroll' },
+    { id: 'd3', amount: 200.00, category: 'Utilities', who: 'System', date: selectedMonth + '-10', transaction_date: selectedMonth + '-10', note: 'Demo: Electricity' }
   ] : [];
 
   const activeTransactions = isDemo ? demoTransactions : transactions;

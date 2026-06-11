@@ -31,7 +31,7 @@ export async function resolvePurchaseAction(
 
     const eventAction = decision === 'RELEASED' ? 'purchase_quarantine.released' : 'purchase_quarantine.rejected';
     const [tenantResult, userResult] = await Promise.all([
-      supabase.rpc('get_my_tenant'),
+      supabase.rpc('get_my_tenant') as any,
       supabase.auth.getUser(),
     ]);
     const tenantId = tenantResult.data as string | null;

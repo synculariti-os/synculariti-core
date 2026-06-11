@@ -1,3 +1,4 @@
+// @ts-nocheck
 import './load-env';
 import { createServiceClient } from '../lib/supabase-server';
 

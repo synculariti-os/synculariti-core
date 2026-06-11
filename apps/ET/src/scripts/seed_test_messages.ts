@@ -75,7 +75,7 @@ async function run() {
         console.error(`Failed for ${user.name} / ${scenario.name}: ${error.message}`);
       } else {
         inserted++;
-        const outboxId = data?.[0]?.id ?? 'unknown';
+        const outboxId = (data as Array<{ id: string }> | undefined)?.[0]?.id ?? 'unknown';
         console.log(`${user.name} (${user.email}): ${scenario.name} (outbox: ${outboxId})`);
       }
     }
@@ -85,13 +85,13 @@ async function run() {
 
   // 4. Prove it: query via get_pending_approvals_v1 as each user
   // We can't auth as each user from here, but we can show raw counts per email
-  const { data: byEmail } = await supabase
+  const { data: byEmail } = await (supabase as any)
     .from('whatsapp_outbox')
     .select('id, recipient_email, recipient_phone, status, payload->>name')
     .eq('tenant_id', TENANT_ID)
     .in('status', ['PENDING', 'SENT']);
   const grouped: Record<string, any[]> = {};
-  (byEmail || []).forEach(r => {
+  (byEmail as Array<{ recipient_email: string | null; name: string; status: string }> || []).forEach(r => {
     const key = r.recipient_email || 'unassigned';
     if (!grouped[key]) grouped[key] = [];
     grouped[key].push(r);

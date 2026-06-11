@@ -27,10 +27,10 @@ export function InvoiceManager({ tenantId }: { tenantId: string }) {
 
   const fetchInvoices = async () => {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase
         .from('invoices')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false }) as any);
       
       if (error) throw error;
       setInvoices(data || []);

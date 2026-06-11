@@ -37,13 +37,13 @@ export async function neo4jBulkMerge(expenses: (Transaction | TransactionSyncPay
     }
     const rawName = (exp.description || 'Unknown Merchant').trim();
     const merchantId = buildMerchantId(rawName);
-    const d = exp.date ? new Date(exp.date + 'T12:00:00') : new Date();
+    const d = exp.transaction_date ? new Date(exp.transaction_date + 'T12:00:00') : new Date();
     const dow = d.getDay();
     return {
       txId: exp.id || '',
       tenantId: exp.tenant_id || '',
       amount: safeAmount(exp.amount),
-      date: exp.date || '',
+      transaction_date: exp.transaction_date || '',
       category: exp.category,
       dayOfWeek: dow,
       isWeekend: dow === 0 || dow === 6,
@@ -69,29 +69,29 @@ export async function neo4jBulkMerge(expenses: (Transaction | TransactionSyncPay
        MERGE (m:Merchant {id: txData.merchantId})
        ON CREATE SET m.name = txData.vendorName
 
-       MERGE (t:Transaction {id: txData.txId})
-       ON CREATE SET
-         t.amount = txData.amount,
-         t.date = txData.date,
-         t.tenant_id = txData.tenantId,
-         t.category = txData.category,
-         t.day_of_week = txData.dayOfWeek,
-         t.is_weekend = txData.isWeekend,
-         t.month = txData.month,
-         t.quarter = txData.quarter,
-         t.is_holiday = txData.isHoliday,
-         t.holiday_name = txData.holidayName,
-         t.days_to_next_holiday = txData.daysToNextHoliday,
-         t.is_before_holiday = txData.isBeforeHoliday
-       ON MATCH SET
-         t.amount = txData.amount,
-         t.date = txData.date,
-         t.category = txData.category,
-         t.day_of_week = txData.dayOfWeek,
-         t.is_weekend = txData.isWeekend,
-         t.month = txData.month,
-         t.quarter = txData.quarter,
-         t.is_holiday = txData.isHoliday,
+        MERGE (t:Transaction {id: txData.txId})
+        ON CREATE SET
+          t.amount = txData.amount,
+          t.transaction_date = txData.transaction_date,
+          t.tenant_id = txData.tenantId,
+          t.category = txData.category,
+          t.day_of_week = txData.dayOfWeek,
+          t.is_weekend = txData.isWeekend,
+          t.month = txData.month,
+          t.quarter = txData.quarter,
+          t.is_holiday = txData.isHoliday,
+          t.holiday_name = txData.holidayName,
+          t.days_to_next_holiday = txData.daysToNextHoliday,
+          t.is_before_holiday = txData.isBeforeHoliday
+        ON MATCH SET
+          t.amount = txData.amount,
+          t.transaction_date = txData.transaction_date,
+          t.category = txData.category,
+          t.day_of_week = txData.dayOfWeek,
+          t.is_weekend = txData.isWeekend,
+          t.month = txData.month,
+          t.quarter = txData.quarter,
+          t.is_holiday = txData.isHoliday,
          t.holiday_name = txData.holidayName,
          t.days_to_next_holiday = txData.daysToNextHoliday,
          t.is_before_holiday = txData.isBeforeHoliday

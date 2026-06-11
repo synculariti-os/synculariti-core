@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   transpilePackages: [
@@ -6,6 +7,8 @@ const nextConfig: NextConfig = {
     '@synculariti/validators',
     '@synculariti/translations',
     '@synculariti/whatsapp-client',
+    '@synculariti/shared-utils',
+    '@synculariti/shared-supabase',
   ],
   async rewrites() {
     return [
@@ -17,4 +20,5 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);

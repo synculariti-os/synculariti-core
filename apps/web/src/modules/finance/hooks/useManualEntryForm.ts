@@ -22,7 +22,7 @@ export interface UseManualEntryFormReturn {
   amount: string;
   category: string;
   whoId: string;
-  date: string;
+  transaction_date: string;
 
   // Lifecycle state
   isSaving: boolean;
@@ -36,7 +36,7 @@ export interface UseManualEntryFormReturn {
   setAmount: (v: string) => void;
   setCategory: (v: string) => void;
   setWhoId: (v: string) => void;
-  setDate: (v: string) => void;
+  setTransaction_date: (v: string) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
 }
 
@@ -56,8 +56,8 @@ export function useManualEntryForm({
   );
   const [category, setCategory] = useState(prefill?.category ?? '');
   const [whoId, setWhoId] = useState(prefill?.who_id ?? firstUserId);
-  const [date, setDate] = useState(
-    prefill?.date ?? new Date().toISOString().slice(0, 10)
+  const [transaction_date, setTransaction_date] = useState(
+    prefill?.transaction_date ?? new Date().toISOString().slice(0, 10)
   );
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -98,7 +98,7 @@ export function useManualEntryForm({
       category: category.trim(),
       who_id: whoId,
       who: resolvedWho,
-      date,
+      transaction_date,
     };
 
     setIsSaving(true);
@@ -119,7 +119,7 @@ export function useManualEntryForm({
     amount,
     category,
     whoId,
-    date,
+    transaction_date,
     isSaving,
     error,
     isEdit,
@@ -129,7 +129,7 @@ export function useManualEntryForm({
     setAmount,
     setCategory,
     setWhoId,
-    setDate,
+    setTransaction_date,
     handleSubmit,
   };
 }

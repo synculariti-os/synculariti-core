@@ -23,6 +23,24 @@ interface UseEventCreationResult {
   error: string | null;
 }
 
+async function fetchEventBatch(
+  supabaseClient: typeof supabase,
+  tenantId: string,
+  entityType: string,
+  entityIds: string[]
+): Promise<EventLogRecord[]> {
+  const { data, error } = await (supabaseClient as any)
+    .from('event_log')
+    .select('*')
+    .eq('tenant_id', tenantId)
+    .eq('entity_type', entityType)
+    .in('entity_id', entityIds)
+    .order('created_at', { ascending: true });
+
+  if (error) throw error;
+  return (data as EventLogRecord[]) || [];
+}
+
 /**
  * Batch-fetches the first creation event for a list of entity IDs in parallel
  * chunks. A single .in() with hundreds of IDs produces a URL that exceeds
@@ -58,32 +76,24 @@ export function useEventCreation(
 
     const chunks = chunkArray(entityIds, BATCH_SIZE);
 
-    Promise.all(
-      chunks.map(chunk =>
-        supabase
-          .from('event_log')
-          .select('*')
-          .eq('tenant_id', tenantId)
-          .eq('entity_type', entityType)
-          .in('entity_id', chunk)
-          .order('created_at', { ascending: true })
-      )
-    ).then(async results => {
-      if (cancelled) return;
-
-      const rawEvents: EventLogRecord[] = [];
+    (async () => {
+      const allRawEvents: EventLogRecord[] = [];
       let firstError: string | null = null;
 
-      for (const { data, error: qError } of results) {
-        if (qError) {
-          Logger.system('ERROR', 'EventLog', 'useEventCreation batch failed', { error: qError.message });
-          if (!firstError) firstError = qError.message;
-          continue;
+      for (const chunk of chunks) {
+        try {
+          const events = await fetchEventBatch(supabase, tenantId, entityType, chunk);
+          allRawEvents.push(...events);
+        } catch (qError) {
+          const msg = qError instanceof Error ? qError.message : String(qError);
+          Logger.system('ERROR', 'EventLog', 'useEventCreation batch failed', { error: msg });
+          if (!firstError) firstError = msg;
         }
-        if (data) rawEvents.push(...(data as EventLogRecord[]));
       }
 
-      const enriched = await enrichEventsWithActorNames(supabase, rawEvents);
+      if (cancelled) return;
+
+      const enriched = await enrichEventsWithActorNames(supabase, allRawEvents);
       const map: Record<string, EventLogRecord> = {};
       for (const row of enriched) {
         if (row.entity_id && !map[row.entity_id]) {
@@ -91,15 +101,14 @@ export function useEventCreation(
         }
       }
 
-      setEventsByEntityId(map);
-      if (firstError) setError(firstError);
-      setLoading(false);
-    });
+      if (!cancelled) {
+        setEventsByEntityId(map);
+        if (firstError) setError(firstError);
+        setLoading(false);
+      }
+    })();
 
     return () => { cancelled = true; };
-  // Re-fetch when the list of IDs changes — stable JSON string comparison avoids
-  // runaway re-renders from reference-unstable arrays.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tenantId, entityType, JSON.stringify(entityIds)]);
 
   return { eventsByEntityId, loading, error };

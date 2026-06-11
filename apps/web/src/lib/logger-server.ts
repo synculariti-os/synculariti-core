@@ -61,13 +61,13 @@ export class ServerLogger {
   ): Promise<void> {
     try {
       const supabase = this.getClient();
-      await supabase.from('activity_log').insert({
+      await (supabase.from('activity_log' as any).insert({
         tenant_id: tenantId,
         action,
         description,
         actor_name: actorName,
         metadata: { ...metadata, timestamp: new Date().toISOString() },
-      });
+      }) as any);
     } catch {
       // Never let activity logging failure crash an API route
     }

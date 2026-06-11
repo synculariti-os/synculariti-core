@@ -125,9 +125,9 @@ async function seed() {
       .single();
 
     if (insertErr) throw new Error(`Failed to create tenant: ${insertErr.message}`);
-    tenantId = newTenant.id;
+    tenantId = newTenant.id as string;
   } else {
-    tenantId = tenantRes.id;
+    tenantId = tenantRes.id as string;
   }
 
   console.log(`Using Tenant ID: ${tenantId}`);
@@ -146,7 +146,7 @@ async function seed() {
 
   const accountMap = new Map<string, string>();
   for (const coa of coaEntries) {
-    const { data: existing } = await supabase
+    const { data: existing } = await (supabase as any)
       .from('chart_of_accounts')
       .select('id')
       .eq('tenant_id', tenantId)
@@ -156,7 +156,7 @@ async function seed() {
     if (existing) {
       accountMap.set(coa.account_code, existing.id);
     } else {
-      const { data: inserted, error } = await supabase
+      const { data: inserted, error } = await (supabase as any)
         .from('chart_of_accounts')
         .insert({ ...coa, tenant_id: tenantId })
         .select('id')
@@ -181,7 +181,7 @@ async function seed() {
   console.log('Seeding locations...');
   const locationRows: Array<{ id: string; name: string; address: string }> = [];
   for (const loc of LOCATIONS) {
-    const { data: existing } = await supabase
+    const { data: existing } = await (supabase as any)
       .from('locations')
       .select('id')
       .eq('tenant_id', tenantId)
@@ -192,7 +192,7 @@ async function seed() {
       console.log(`  Location exists: ${loc.name} (${existing.id})`);
     } else {
       const id = generateUUID();
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('locations')
         .insert({ id, tenant_id: tenantId, name: loc.name, address: loc.address });
       if (error) throw new Error(`Failed to create location ${loc.name}: ${error.message}`);
@@ -265,7 +265,7 @@ async function seed() {
     if (batchEnd > posEnd) batchEnd.setTime(posEnd.getTime());
 
     const batchId = generateUUID();
-    const { error: batchErr } = await supabase
+    const { error: batchErr } = await (supabase as any)
       .from('pos_batch_uploads')
       .insert({
         id: batchId,
@@ -319,7 +319,7 @@ async function seed() {
 
           const totalCost = ingResolved.reduce((sum, ir) => sum + ir.cost, 0);
 
-          const { error: stagingErr } = await supabase
+          const { error: stagingErr } = await (supabase as any)
             .from('pos_transaction_staging')
             .insert({
               tenant_id: tenantId,
@@ -364,7 +364,7 @@ async function seed() {
   // 2f. Purchase Records
   console.log('Seeding purchase records (matching POS ingredient consumption)...');
   // Collect ingredient totals from staging data for purchase correlation
-  const { data: stagingRows } = await supabase
+  const { data: stagingRows } = await (supabase as any)
     .from('pos_transaction_staging')
     .select('theoretical_grams, transaction_time, location_id')
     .eq('tenant_id', tenantId);
@@ -428,7 +428,7 @@ async function seed() {
       const loc = pick(locationRows);
       const amount = Math.round((perPurchase * (0.85 + Math.random() * 0.3)) * 100) / 100;
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('purchases')
         .insert({
           tenant_id: tenantId,
@@ -458,17 +458,17 @@ async function seed() {
     const loc = locationRows[0];
     const accounts = Array.from(accountMap.values());
     if (accounts.length > 0) {
-      await supabase.from('purchases').insert({
+      await (supabase as any).from('purchases').insert({
         tenant_id: tenantId, location_id: loc.id, account_id: accounts[0],
         total_amount: 89.50, purchase_date: '2026-06-15',
         ingredient_id: 'ing-chicken-breast', ingredient_name: 'Kuracie prsia',
         vendor_name: 'Bidfood Slovakia', quarantine_status: 'PENDING',
       });
-      const { data: latest } = await supabase.from('purchases')
+      const { data: latest } = await (supabase as any).from('purchases')
         .select('id').eq('tenant_id', tenantId)
         .order('created_at', { ascending: false }).limit(1);
       if (latest?.[0]) {
-        await supabase.from('purchase_anomaly_queue').insert({
+        await (supabase as any).from('purchase_anomaly_queue').insert({
           tenant_id: tenantId, location_id: loc.id,
           purchase_id: latest[0].id, check_type: 'price_spike',
           severity: 'medium', status: 'OPEN',
@@ -485,7 +485,7 @@ async function seed() {
     // Create a gap for ~5% of days
     if (Math.random() < 0.05) {
       const loc = pick(locationRows);
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('pos_data_gaps')
         .upsert({
           tenant_id: tenantId,
@@ -563,6 +563,7 @@ async function seed() {
       currency: 'EUR',
       category: vendor.cat,
       date: date,
+      transaction_date: date,
       description: vendor.name,
       transaction_type: 'DEBIT',
       transacted_at: new Date(date).toISOString(),
@@ -584,12 +585,12 @@ async function seed() {
         continue;
       }
 
-      const { error: itemsErr } = await supabase
+      const { error: itemsErr } = await (supabase as any)
         .from('receipt_items')
         .insert(itemsBatch);
       if (itemsErr) {
         console.error('Items Error:', itemsErr, '- Rolling back transactions');
-        await supabase
+        await (supabase as any)
           .from('transactions')
           .delete()
           .in('id', insertedTxs.map(t => t.id));

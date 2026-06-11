@@ -64,14 +64,14 @@ async function main() {
   for (const item of MULTI_MERCHANT_ITEMS) {
     for (const vendor of item.vendors) {
       if (!vendorTx[vendor]) {
-        const { data: txs } = await supabase
+        const { data: txs } = await (supabase as any)
           .from('transactions')
-          .select('id, date, amount, category')
-          .eq('tenant_id', tenantId)
+          .select('id, transaction_date, amount, category')
+          .eq('tenant_id', tenantId as string)
           .eq('description', vendor)
           .eq('is_deleted', false)
           .limit(5);
-        vendorTx[vendor] = txs?.map(t => t.id) || [];
+        vendorTx[vendor] = txs?.map((t: { id: string }) => t.id) || [];
         console.log(`${vendor}: ${vendorTx[vendor].length} transactions found`);
       }
     }
@@ -87,7 +87,7 @@ async function main() {
         newItems.push({
           id: generateUUID(),
           transaction_id: txId,
-          tenant_id: tenantId,
+          tenant_id: tenantId as string,
           name: item.name,
           amount: price,
           category: item.cat,
@@ -105,13 +105,13 @@ async function main() {
   }
 
   console.log(`Inserting ${newItems.length} new receipt items...`);
-  const { error: insErr } = await supabase.from('receipt_items').insert(newItems);
+  const { error: insErr } = await (supabase as any).from('receipt_items').insert(newItems);
   if (insErr) {
     console.error('Insert error:', insErr.message);
     // Try batch insert if bulk fails
     for (let i = 0; i < newItems.length; i += 100) {
       const batch = newItems.slice(i, i + 100);
-      const { error } = await supabase.from('receipt_items').insert(batch);
+      const { error } = await (supabase as any).from('receipt_items').insert(batch);
       if (error) console.error(`Batch ${i} error:`, error.message);
       else console.log(`  Batch ${i / 100 + 1} OK`);
     }
@@ -123,7 +123,7 @@ async function main() {
   const { count: riCount } = await supabase
     .from('receipt_items')
     .select('*', { count: 'exact', head: true })
-    .eq('tenant_id', tenantId);
+    .eq('tenant_id', tenantId as string);
   console.log(`Total receipt_items for tenant: ${riCount}`);
 
   // Step 4: Rebuild Neo4j from scratch
@@ -141,10 +141,10 @@ async function main() {
   let page = 0;
   const PAGE_SIZE = 1000;
   while (true) {
-    const { data: chunk, error } = await supabase
+    const { data: chunk, error } = await (supabase as any)
       .from('transactions')
-      .select('id, amount, date, category, who, description, currency, tenant_id')
-      .eq('tenant_id', tenantId)
+      .select('id, amount, transaction_date, category, who, description, currency, tenant_id')
+      .eq('tenant_id', tenantId as string)
       .eq('is_deleted', false)
       .order('id', { ascending: true })
       .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
@@ -162,10 +162,10 @@ async function main() {
   let allItems: ReceiptItemRow[] = [];
   let itemPage = 0;
   while (true) {
-    const { data: chunk, error } = await supabase
+    const { data: chunk, error } = await (supabase as any)
       .from('receipt_items')
       .select('id, transaction_id, name, amount, category, currency')
-      .eq('tenant_id', tenantId)
+      .eq('tenant_id', tenantId as string)
       .range(itemPage * PAGE_SIZE, (itemPage + 1) * PAGE_SIZE - 1);
     if (error) throw new Error('Failed to fetch items: ' + error.message);
     if (!chunk || chunk.length === 0) break;

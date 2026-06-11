@@ -12,6 +12,7 @@
   "dependencies": {
     "@supabase/ssr": "^0.10.2",
     "@supabase/supabase-js": "^2.104.1",
+    "@synculariti/shared-supabase": "workspace:*",
     "@synculariti/whatsapp-client": "workspace:*",
     "chart.js": "^4.5.1",
     "groq-sdk": "^0.9.1",

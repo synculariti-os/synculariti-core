@@ -44,7 +44,7 @@ export function OrgAccessForm({ session, onBack }: Props) {
     
     try {
       const lowerHandle = handle.toLowerCase();
-      const { data: lookupData, error: lErr } = await supabase.rpc('verify_tenant_access', { input_code: lowerHandle });
+      const { data: lookupData, error: lErr } = await (supabase.rpc('verify_tenant_access', { input_code: lowerHandle }) as any) as { data: { target_id: string }[] | null; error: any };
       if (lErr) throw lErr;
       if (!lookupData || lookupData.length === 0) throw new Error("Invalid access code.");
       

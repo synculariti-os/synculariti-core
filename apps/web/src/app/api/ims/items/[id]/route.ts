@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+    const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
     if (tenantErr || !tenantId) {
       return NextResponse.json({ error: 'Tenant not found' }, { status: 403 });
     }
@@ -96,7 +96,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+    const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
     if (tenantErr || !tenantId) {
       return NextResponse.json({ error: 'Tenant not found' }, { status: 403 });
     }
@@ -126,9 +126,9 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'No fields to update' }, { status: 400 });
     }
 
-    const { data: item, error } = await supabase
+    const { data: item, error } = await (supabase
       .from('items')
-      .update(updateData)
+      .update(updateData as any) as any)
       .eq('id', id)
       .eq('tenant_id', tenantId)
       .select()
@@ -181,16 +181,16 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const { data: tenantId, error: tenantErr } = await supabase.rpc('get_my_tenant');
+    const { data: tenantId, error: tenantErr } = await (supabase.rpc('get_my_tenant') as any) as { data: string | null; error: any };
     if (tenantErr || !tenantId) {
       return NextResponse.json({ error: 'Tenant not found' }, { status: 403 });
     }
 
-    const { error } = await supabase
+    const { error } = await (supabase
       .from('items')
       .delete()
       .eq('id', id)
-      .eq('tenant_id', tenantId);
+      .eq('tenant_id', tenantId) as any);
     
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

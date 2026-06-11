@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@supabase/ssr';
+import { createServerSupabaseClient } from '@synculariti/shared-supabase';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -14,9 +14,8 @@ function isApiPath(pathname: string): boolean {
   return pathname.startsWith('/api/');
 }
 
-// Check if we're in a build-time context (no Supabase credentials available)
 function isBuildTime(): boolean {
-  return !supabaseUrl || !supabaseKey || supabaseUrl === '' || supabaseKey === '';
+  return !supabaseUrl || !supabaseKey;
 }
 
 export async function middleware(request: NextRequest) {
@@ -26,24 +25,16 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Skip auth during build time
   if (isBuildTime()) {
-    console.log('[middleware] Skipping auth during build time for:', pathname);
     return NextResponse.next();
   }
 
   const response = NextResponse.next();
 
-  const supabase = createServerClient(supabaseUrl, supabaseKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value }) => {
-          response.cookies.set(name, value);
-        });
-      },
+  const supabase = createServerSupabaseClient({
+    getAll: () => request.cookies.getAll(),
+    setAll: (cookiesToSet) => {
+      cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
     },
   });
 

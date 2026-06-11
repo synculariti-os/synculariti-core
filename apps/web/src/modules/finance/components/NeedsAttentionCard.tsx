@@ -57,14 +57,14 @@ export function NeedsAttentionCard({ tenantId, selectedMonth }: NeedsAttentionCa
     try {
       const [pending, rejected, anomalies, gaps, approvalRows] = await Promise.all([
         supabase.from('purchases').select('*', { count: 'exact', head: true })
-          .eq('tenant_id', tenantId).eq('quarantine_status', 'PENDING'),
+          .eq('tenant_id', tenantId!).eq('quarantine_status', 'PENDING'),
         supabase.from('purchases').select('*', { count: 'exact', head: true })
-          .eq('tenant_id', tenantId).eq('quarantine_status', 'REJECTED'),
+          .eq('tenant_id', tenantId!).eq('quarantine_status', 'REJECTED'),
         supabase.from('purchase_anomaly_queue').select('*', { count: 'exact', head: true })
-          .eq('tenant_id', tenantId).eq('status', 'OPEN'),
+          .eq('tenant_id', tenantId!).eq('status', 'OPEN'),
         supabase.from('pos_data_gaps').select('*', { count: 'exact', head: true })
-          .eq('tenant_id', tenantId).gte('gap_date', periodStart).lte('gap_date', periodEnd),
-        supabase.rpc('get_pending_approvals_v1'),
+          .eq('tenant_id', tenantId!).gte('gap_date', periodStart).lte('gap_date', periodEnd),
+        (supabase.rpc('get_pending_approvals_v1') as any) as { data: { id: string; payload: Record<string, unknown> }[] | null; error: any },
       ]);
 
       setItems({

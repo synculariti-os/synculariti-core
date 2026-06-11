@@ -5,7 +5,8 @@ export interface Transaction {
   category: string;      // The display text (Snapshot/Legacy)
   category_id?: string;  // The stable ID (Modern)
   account_id?: string;   // CoA ID (Synculariti Finance)
-  date: string;
+  date?: string;           // Alias for transaction_date (legacy, optional since DB has transaction_date)
+  transaction_date: string;
   who?: string;
   who_id?: string;
   description?: string;
