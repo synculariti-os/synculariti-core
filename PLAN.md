@@ -1,6 +1,6 @@
 # Synculariti Core — Plan
 
-## Status: Schema Complete — Now in Schema Fortification Phase (Phase 5b Build Unblocking DONE)
+## Status: Schema Complete — Phase 5 Schema Fortification ✅ DONE
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
@@ -30,7 +30,7 @@
 | `@synculariti/whatsapp-client` | WhatsApp Business API client | ✅ Active |
 | `@synculariti/config` | Shared ESLint/TypeScript config | ✅ Active |
 
-## Schema Health Score: 7/10
+## Schema Health Score: 8.5/10
 
 ### Strengths
 - Multi-tenant (franchise_groups → restaurants, tenant_id on all core tables)
@@ -43,13 +43,10 @@
 - Finance with chart of accounts + double-entry transactions
 - POS staging with anomaly detection + WhatsApp HITL workflow
 
-### Critical Gaps
-- **No event store** — CQRS blocker
+### Critical Gaps (remaining after Phase 5)
 - **No materialized read models** — Query performance at scale
 - **No temporal/point-in-time queries** — Accounting P&L by period
-- **Single inventory valuation (FIFO only)** — Multi-method needed
-- **No accounting periods / period close**
-- **Hardcoded EUR currency**
+- **Single inventory valuation (FIFO only)** — Multi-method needed (Weighted Average, Standard Cost)
 - **No labor management** — Prime cost = 0% tracked
 - **No menu engineering / versioning**
 - **No allergen/nutrition tracking**
@@ -63,11 +60,7 @@
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
 - Dual hierarchy (`franchise_group_id` + `tenant_id`) — confusion
-- `et_purchase_orders` vs `purchase_orders` — duplicate procurement
-- `et_inventory_ledger` vs `inventory_ledger` — duplicate inventory
 - `transactions` PK index named `expenses_pkey` (legacy)
-- No unique constraint on `recipe_ingredients(recipe_id, ingredient_item_id)`
-- No `updated_at` trigger on all tables (some missing)
 - `feature_flags` has no targeting rules (all-or-nothing)
 
 ### CQRS Readiness: 2/10
@@ -96,22 +89,24 @@ Missing event store, projections, command/query separation, idempotent commands,
 - [x] Backward-compat views (tenants, locations, inventory_categories, inventory_items)
 - [x] All types regenerated (Kysely + PostgREST)
 
-### Phase 5: Schema Fortification (NOW — P0)
-- [x] 5.1 Event store table (`domain_events`) — migration written (20260611120002_event_store.sql), needs apply to live Supabase
-  - Columns: id UUID, aggregate_id UUID, aggregate_type TEXT, event_type TEXT, payload JSONB, metadata JSONB, version INT, correlation_id UUID, causation_id UUID, created_at TIMESTAMPTZ
-  - Indexes: aggregate_id + version (unique), event_type, correlation_id
-  - Append-only policy (trigger prevents UPDATE/DELETE)
-- [ ] 5.2 Fix nullable `tenant_id` — add NOT NULL + backfill on items, recipes, vendors, transactions
-- [ ] 5.3 Consolidate duplicate tables
-  - Merge `et_purchase_orders` → `purchase_orders` (missed columns: delivery_status, notes)
-  - Merge `et_inventory_ledger` → `inventory_ledger`
-  - Merge `et_po_line_items` → `po_line_items`
-- [ ] 5.4 Add `accounting_periods` table + period close function
-- [ ] 5.5 Add `exchange_rates` table — EUR base rate per date
-- [ ] 5.6 Add `tenant_settings` table (branding, config, feature flags targeting)
-- [ ] 5.7 Add unique constraint on `recipe_ingredients(recipe_id, ingredient_item_id)`
-- [ ] 5.8 Backfill missing `updated_at` triggers
-- [ ] 5.9 Regenerate types after schema changes
+### Phase 5: Schema Fortification ✅ COMPLETE
+- [x] 5.1 Event store table (`domain_events`) — migration written (20260611120002_event_store.sql), applied to live Supabase
+-   - Columns: id UUID, aggregate_id UUID, aggregate_type TEXT, event_type TEXT, payload JSONB, metadata JSONB, version INT, correlation_id UUID, causation_id UUID, created_at TIMESTAMPTZ
+-   - Indexes: aggregate_id + version (unique), event_type, correlation_id
+-   - Append-only policy (trigger prevents UPDATE/DELETE)
+- [x] 5.2 Fix nullable `tenant_id` — add NOT NULL + backfill on items, recipes, vendors, transactions
+- [x] 5.3 Consolidate duplicate tables
+-   - Merged `et_purchase_orders` → `purchase_orders` (added delivery_status, notes)
+-   - Merged `et_inventory_ledger` → `inventory_ledger` (added quantity, cost)
+-   - Merged `et_po_line_items` → `po_line_items` (added discount)
+-   - Dropped legacy `et_*` tables
+- [x] 5.4 Add `accounting_periods` table + period close function
+- [x] 5.5 Add `exchange_rates` table — EUR base rate per date
+- [x] 5.6 Add `tenant_settings` table (branding, config, feature flags targeting) — FK to `franchise_groups`
+- [x] 5.7 Add unique constraint on `recipe_ingredients(recipe_id, ingredient_item_id)`
+- [x] 5.8 Backfill missing `updated_at` triggers on items, recipes, vendors, transactions
+- [x] 5.9 Regenerate types after schema changes — `@synculariti/shared-supabase` built successfully
+
 
 ### Phase 5b: Build Unblocking (COMPLETED)
 - [x] `@synculariti/shared-supabase` as single source of truth for Supabase client

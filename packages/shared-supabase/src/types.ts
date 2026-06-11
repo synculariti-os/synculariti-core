@@ -15,6 +15,153 @@ export type Database = {
   }
   public: {
     Tables: {
+      accounting_periods: {
+        Row: {
+          id: string | null
+          tenant_id: string
+          name: string
+          start_date: string
+          end_date: string
+          closed_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string | null
+          tenant_id?: string | null
+          name?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          closed_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          tenant_id?: string | null
+          name?: string | null
+          start_date?: string | null
+          end_date?: string | null
+          closed_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accounting_periods_tenant_id_fkey",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "franchise_groups",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounting_periods_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounting_periods_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounting_periods_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      exchange_rates: {
+        Row: {
+          id: string | null
+          date: string
+          currency: string
+          rate: number
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          date?: string | null
+          currency?: string | null
+          rate?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          date?: string | null
+          currency?: string | null
+          rate?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      tenant_settings: {
+        Row: {
+          id: string | null
+          tenant_id: string
+          branding: any | null
+          config: any | null
+          feature_flags: any | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string | null
+          tenant_id?: string | null
+          branding?: any | null
+          config?: any | null
+          feature_flags?: any | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          tenant_id?: string | null
+          branding?: any | null
+          config?: any | null
+          feature_flags?: any | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_settings_tenant_id_fkey",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "franchise_groups",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_settings_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_settings_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_settings_tenant_id_fkey__tenants",
+            columns: ["tenant_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       et_purchase_orders: {
         Row: {
           id: string | null
@@ -1171,6 +1318,7 @@ export type Database = {
           created_at: string
           updated_at: string
           deleted_at: string | null
+          delivery_status: string | null
         }
         Insert: {
           id?: string | null
@@ -1189,6 +1337,7 @@ export type Database = {
           created_at?: string | null
           updated_at?: string | null
           deleted_at?: string | null
+          delivery_status?: string | null
         }
         Update: {
           id?: string | null
@@ -1207,6 +1356,7 @@ export type Database = {
           created_at?: string | null
           updated_at?: string | null
           deleted_at?: string | null
+          delivery_status?: string | null
         }
         Relationships: [
           {

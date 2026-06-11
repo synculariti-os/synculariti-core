@@ -3,7 +3,7 @@ import type { Database } from './types';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Singleton browser client (shared‑supabase already provides a typed client factory)
-export const supabase = createBrowserSupabaseClient<Database>();
+export const supabase = createBrowserSupabaseClient();
 
 /** Typed wrapper for `from` – guarantees the table name exists in the generated DB types */
 export function fromTyped<T extends keyof Database['public']['Tables']>(table: T) {
