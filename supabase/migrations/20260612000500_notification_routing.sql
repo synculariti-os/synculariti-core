@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS public.notification_rules (
   action_url_template text,
   is_active boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz
+  updated_at timestamptz,
+  CONSTRAINT uq_notification_rules_event_role_channel UNIQUE (event_type, target_role, channel)
 );
 
 CREATE INDEX IF NOT EXISTS idx_notification_rules_event

@@ -68,7 +68,16 @@
 ### Critical Gaps (remaining after Phase 10)
 — All core operational domains + CQRS + notification routing complete.
 IMS→WhatsApp gap resolved via `route_notification()` RPC.
-Remaining work: Retrofit remaining HITL workflows into saga orchestrator (10b.2–10b.10), NestJS command/query/event bus wiring (10.4), shared UI extraction (Phase 11).
+
+**Next priority — Vercel deployment + CI pipeline:**
+- Extract shared UI from IMS + ET into `@synculariti/shared-ui`
+- Unify Tailwind design tokens
+- Convert ET CSS modules → Tailwind
+- Port remaining IMS/ET pages to consolidated route groups
+- Set up Vercel project + preview deployments
+- CI: lint + typecheck + test on every push
+
+Remaining DB work: Retofit remaining HITL workflows into saga orchestrator (10b.2–10b.10), NestJS command/query/event bus wiring (10.4).
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -76,8 +85,9 @@ Remaining work: Retrofit remaining HITL workflows into saga orchestrator (10b.2�
 - `transactions` PK index named `expenses_pkey` (legacy)
 - `feature_flags` has no targeting rules (all-or-nothing)
 
-### CQRS Readiness: 2/10
-Missing event store, projections, command/query separation, idempotent commands, saga orchestration.
+### CQRS Readiness: 8/10
+Event store ✅, event types ✅, saga orchestrator ✅, projection tracking ✅, notification routing ✅.
+Missing: NestJS command/query buses, event bus wiring (application layer).
 
 ## Phase Checklist
 
