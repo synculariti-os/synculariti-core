@@ -15,6 +15,236 @@ export type Database = {
   }
   public: {
     Tables: {
+      domain_events: {
+        Row: {
+          id: string | null
+          aggregate_id: string
+          aggregate_type: string
+          event_type: string
+          payload: any
+          metadata: any
+          version: string
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          aggregate_id?: string | null
+          aggregate_type?: string | null
+          event_type?: string | null
+          payload?: any | null
+          metadata?: any | null
+          version?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          aggregate_id?: string | null
+          aggregate_type?: string | null
+          event_type?: string | null
+          payload?: any | null
+          metadata?: any | null
+          version?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      domain_event_types: {
+        Row: {
+          event_type: string | null
+          aggregate_type: string
+          description: string | null
+          schema_def: any | null
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          event_type?: string | null
+          aggregate_type?: string | null
+          description?: string | null
+          schema_def?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          event_type?: string | null
+          aggregate_type?: string | null
+          description?: string | null
+          schema_def?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      projection_status: {
+        Row: {
+          projection_name: string | null
+          last_event_id: string | null
+          last_occurred_at: string | null
+          is_stale: boolean
+          last_refreshed_at: string | null
+          error_count: number
+          last_error: string | null
+        }
+        Insert: {
+          projection_name?: string | null
+          last_event_id?: string | null
+          last_occurred_at?: string | null
+          is_stale?: boolean | null
+          last_refreshed_at?: string | null
+          error_count?: number | null
+          last_error?: string | null
+        }
+        Update: {
+          projection_name?: string | null
+          last_event_id?: string | null
+          last_occurred_at?: string | null
+          is_stale?: boolean | null
+          last_refreshed_at?: string | null
+          error_count?: number | null
+          last_error?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      saga_instances: {
+        Row: {
+          id: string | null
+          saga_type: string
+          correlation_id: string
+          status: string
+          state: any
+          tenant_id: string | null
+          started_at: string
+          completed_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          saga_type?: string | null
+          correlation_id?: string | null
+          status?: string | null
+          state?: any | null
+          tenant_id?: string | null
+          started_at?: string | null
+          completed_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          saga_type?: string | null
+          correlation_id?: string | null
+          status?: string | null
+          state?: any | null
+          tenant_id?: string | null
+          started_at?: string | null
+          completed_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      saga_steps: {
+        Row: {
+          id: string | null
+          saga_instance_id: string
+          step_name: string
+          status: string
+          event_type: string
+          compensating_event_type: string | null
+          executed_at: string | null
+          compensated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          saga_instance_id?: string | null
+          step_name?: string | null
+          status?: string | null
+          event_type?: string | null
+          compensating_event_type?: string | null
+          executed_at?: string | null
+          compensated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          saga_instance_id?: string | null
+          step_name?: string | null
+          status?: string | null
+          event_type?: string | null
+          compensating_event_type?: string | null
+          executed_at?: string | null
+          compensated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saga_steps_saga_instance_id_fkey",
+            columns: ["saga_instance_id"],
+            isOneToOne: false,
+            referencedRelation: "saga_instances",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      saga_definitions: {
+        Row: {
+          saga_type: string | null
+          description: string | null
+          step_definitions: any
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          saga_type?: string | null
+          description?: string | null
+          step_definitions?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          saga_type?: string | null
+          description?: string | null
+          step_definitions?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      aggregate_snapshots: {
+        Row: {
+          aggregate_type: string
+          aggregate_id: string
+          snapshot_version: number
+          state: any
+          last_event_id: string | null
+          created_at: string
+        }
+        Insert: {
+          aggregate_type?: string | null
+          aggregate_id?: string | null
+          snapshot_version?: number | null
+          state?: any | null
+          last_event_id?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          aggregate_type?: string | null
+          aggregate_id?: string | null
+          snapshot_version?: number | null
+          state?: any | null
+          last_event_id?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
       vendor_portal_access: {
         Row: {
           id: string | null
@@ -3253,41 +3483,6 @@ export type Database = {
             referencedRelation: "tenants",
             referencedColumns: ["id"]
           }
-        ]
-      }
-      domain_events: {
-        Row: {
-          id: string | null
-          aggregate_id: string
-          aggregate_type: string
-          event_type: string
-          payload: any
-          metadata: any
-          version: string
-          created_at: string
-        }
-        Insert: {
-          id?: string | null
-          aggregate_id?: string | null
-          aggregate_type?: string | null
-          event_type?: string | null
-          payload?: any | null
-          metadata?: any | null
-          version?: string | null
-          created_at?: string | null
-        }
-        Update: {
-          id?: string | null
-          aggregate_id?: string | null
-          aggregate_type?: string | null
-          event_type?: string | null
-          payload?: any | null
-          metadata?: any | null
-          version?: string | null
-          created_at?: string | null
-        }
-        Relationships: [
-
         ]
       }
       franchise_groups: {
