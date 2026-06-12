@@ -15,6 +15,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      recipe_cost_snapshots: {
+        Row: {
+          id: string | null
+          recipe_id: string
+          snapshot_date: string
+          cost_per_unit: number | null
+          total_cost: number | null
+          yield_qty: number | null
+          ingredient_count: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          recipe_id?: string | null
+          snapshot_date?: string | null
+          cost_per_unit?: number | null
+          total_cost?: number | null
+          yield_qty?: number | null
+          ingredient_count?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          recipe_id?: string | null
+          snapshot_date?: string | null
+          cost_per_unit?: number | null
+          total_cost?: number | null
+          yield_qty?: number | null
+          ingredient_count?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recipe_cost_snapshots_recipe_id_fkey",
+            columns: ["recipe_id"],
+            isOneToOne: false,
+            referencedRelation: "recipes",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       accounting_periods: {
         Row: {
           id: string | null

@@ -8,7 +8,7 @@ const outputPath = join(__dirname, '..', 'packages', 'shared-supabase', 'src', '
 
 // Read unified migrations only (exclude old ims/et schema files).
 // Process in reverse so the earliest definition (fullest columns) wins.
-const migrationFiles = readdirSync(migrationsDir).filter(f => f.endsWith('.sql') && f.startsWith('20260611')).sort().reverse();
+const migrationFiles = readdirSync(migrationsDir).filter(f => f.endsWith('.sql') && (f.startsWith('20260611') || f.startsWith('20260612'))).sort().reverse();
 let sql = '';
 for (const file of migrationFiles) {
   sql += readFileSync(join(migrationsDir, file), 'utf-8') + '\n';
