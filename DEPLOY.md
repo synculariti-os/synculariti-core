@@ -9,7 +9,15 @@ A single NestJS process serves both the REST API and the static Next.js SPA.
 | `apps/ims/api` (NestJS) | HTTP server, API routes, serves SPA | `dist/` (SWC) |
 | `apps/web` (Next.js) | Build-time static export → `out/` | Static HTML/JS/CSS |
 
-Only one deployable artifact: the Docker image.
+You can choose one of three deployment approaches:
+
+1. **Railway + Vercel** – API on Railway (Docker) and static SPA on Vercel.
+2. **Single Docker** – both API and SPA served from one Docker image (Railway, Render, Fly.io, etc.).
+3. **Legacy Vercel** – historical multi‑app setup (kept for reference).
+
+All steps are CLI‑driven.
+
+
 
 ---
 
@@ -70,7 +78,60 @@ Railway supports PR environments. Enable in Project Settings → PR Deployments.
 
 ---
 
-## 2. Manual Docker deploy (any platform)
+## 2. Vercel Deploy (SPA)
+
+The static Next.js SPA (`apps/web`) can be deployed directly to Vercel using the Vercel CLI. The API remains hosted on Railway (or any Docker platform).
+
+### 2a. Install Vercel CLI
+```bash
+npm i -g vercel
+```
+
+### 2b. Login & link project
+```bash
+# From the repo root
+vercel login          # opens browser for auth
+
+# Navigate to the SPA directory and link/create a Vercel project
+cd apps/web
+vercel link          # follow prompts to create a Vercel project (e.g., synculariti-spa)
+```
+
+### 2c. Set client‑side environment variables (Vercel stores them securely)
+```bash
+# Run these inside the `apps/web` directory
+vercel env add NEXT_PUBLIC_SUPABASE_URL production
+vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production
+# Point the SPA to the API hosted on Railway (replace with your Railway URL)
+vercel env add NEXT_PUBLIC_API_URL production
+```
+
+You can also add `development` and `preview` values if you use different URLs for those environments.
+
+### 2d. Deploy the SPA
+```bash
+# Ensure the SPA build output is up‑to‑date (static export)
+cd ../../          # back to repo root
+pnpm build --filter=@synculariti/web
+
+# Deploy to Vercel (from the `apps/web` directory)
+cd apps/web
+vercel --prod
+```
+
+Vercel will serve the static `out/` directory. The SPA will make API calls to the URL you set in `NEXT_PUBLIC_API_URL` (your Railway deployment).
+
+### 2e. Preview (PR) deployments on Vercel
+Vercel automatically creates preview URLs for each branch/pull request:
+```bash
+# From any branch, just run:
+vercel
+```
+The preview will inherit the environment variables you set for the `preview` environment.
+
+---
+
+## 3. Manual Docker deploy (any platform)
 
 ```bash
 # Build
@@ -88,7 +149,7 @@ docker run -d \
 
 ---
 
-## 3. Environment Variables Reference
+## 4. Environment Variables Reference
 
 ### Required (all deployments)
 
@@ -111,7 +172,7 @@ docker run -d \
 
 ---
 
-## 4. Build troubleshooting
+## 5. Build troubleshooting
 
 | Symptom | Fix |
 |---------|-----|
@@ -124,7 +185,7 @@ docker run -d \
 
 ---
 
-## Appendix: Historical Vercel setup (pre-consolidation)
+## 6. Appendix: Historical Vercel setup (pre-consolidation)
 
 *Before the monolith merge, four separate apps were deployed on Vercel + Docker. This section is kept for reference only.*
 
