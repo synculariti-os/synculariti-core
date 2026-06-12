@@ -1,6 +1,6 @@
 # Synculariti Core — Plan
 
-## Status: Phases 1–10 ✅ — CQRS Foundation Complete
+## Status: Phases 1–10b ✅ — Three-Way Match Sagafied
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
@@ -185,7 +185,7 @@ Missing event store, projections, command/query separation, idempotent commands,
 - [x] 10.6 Read model rebuild — `rebuild_projection()` (REFRESH MATERIALIZED VIEW CONCURRENTLY), `rebuild_stale_projections()`, `take_aggregate_snapshot()`, `aggregate_snapshots` table
 
 ### Phase 10b: Saga-Driven Workflows (Future — Formalise HITL & Multi-Step Processes)
-- [ ] **10b.1 Three-way match (retrofit)** — wire existing `goods_receipts`/`three_way_match_results` triggers → `start_saga('procure_to_pay')`, `advance_saga('goods.receipt.confirmed')`, `advance_saga('invoice.match.verified')` / `fail_saga('invoice.match.failed')`
+- [x] **10b.1 Three-way match (retrofit)** — wire existing `goods_receipts`/`three_way_match_results` triggers → `start_saga('procure_to_pay')`, `advance_saga('goods.receipt.confirmed')`, `advance_saga('invoice.match.verified')` / `fail_saga('invoice.match.failed')`
 - [ ] **10b.2 POS ingestion HITL** — anomalous `sales_import_rows` trigger WhatsApp outbox HITL flow → formalised as saga with `sales_import.submitted`, `.approved`, `.rejected` events
 - [ ] **10b.3 Inventory count variance approval** — count completes with variance → saga: `inventory.count.completed` → supervisor approval step → `inventory.batch.adjusted` or rollback
 - [ ] **10b.4 Receipt scanning → extraction → approval** — OCR receipt → saga with `receipt.scanned`, `.data_extracted`, `.approved`, `.rejected`; HITL on extraction confidence < threshold
