@@ -1,10 +1,10 @@
 # Synculariti Core — Plan
 
-## Status: Phase 5 ✅ Phase 6 ✅ Phase 7 ✅ — Domain Expansion Complete
+## Status: Phases 1–8 ✅ — Guest Experience Complete
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Database**: Single `public` schema — IMS + ET tables unified (74 tables + 4 views)
+- **Database**: Single `public` schema — IMS + ET tables unified (90 tables + 4 views)
 - **Frontend**: `apps/web` (Next.js) with route groups `(ims)/ims/` and `(et)/et/`
 - **Backend**: `apps/ims/api` (NestJS) as primary API; ET features as Next.js API routes in `apps/web`
 - **Auth**: Supabase Auth as source of truth, synced to `users` table via trigger
@@ -47,13 +47,20 @@
 - Procurement three-way matching (PO → Receipt → Invoice)
 - Menu versioning with seasonal menus and item pricing
 - Allergen & nutritional tracking on items
+- Guest profiles with CRM, visit tracking, and segmentation tags
+- Loyalty program (points, tiers, rewards catalog)
+- Reservations, table management, floor plans, and waitlist
+- KDS foundation (stations, tickets, line items, routing)
+- Guest feedback and survey response collection
 
-### Critical Gaps (remaining after Phase 7)
-- **No guest CRM / loyalty**
-- **No table management / reservations**
-- **No KDS foundation**
+### Critical Gaps (remaining after Phase 8)
 - **No vendor portal / EDI**
 - **No commissary/central kitchen**
+- **No cost centers / profit centers / intercompany**
+- **No bank reconciliation**
+- **No compliance layer (GDPR, PII)**
+
+Also: Schema Health Score pending recalibration — most core restaurant domains are now covered.
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -149,12 +156,12 @@ Missing event store, projections, command/query separation, idempotent commands,
 
 > **Note:** `mv_prime_cost` labor component now has live tables to draw from once populated.
 
-### Phase 8: Guest Experience (P2)
-- [ ] 8.1 guest_profiles + CRM
-- [ ] 8.2 loyalty_accounts + loyalty_points
-- [ ] 8.3 reservations + waitlist + tables + floor_plans
-- [ ] 8.4 KDS foundation (kitchen_tickets, kds_stations, ticket_routing)
-- [ ] 8.5 guest_feedback + surveys
+### Phase 8: Guest Experience ✅ COMPLETE
+- [x] 8.1 Guest profiles + CRM — `guest_profiles` with tags/preferences, `guest_visits` for visit history
+- [x] 8.2 Loyalty — `loyalty_accounts` (points/tier), `loyalty_points_transactions`, `loyalty_rewards` catalog
+- [x] 8.3 Reservations + tables — `floor_plans`, `restaurant_tables`, `reservations`, `reservation_tables`, `waitlist_entries`
+- [x] 8.4 KDS foundation — `kds_stations`, `kitchen_tickets`, `ticket_items` (with modifiers/station routing), `ticket_routing`
+- [x] 8.5 Guest feedback — `guest_feedback` (rating + category), `survey_responses` (structured Q&A)
 
 ### Phase 9: Enterprise Scale (P2–P3)
 - [ ] 9.1 Vendor portal / EDI (`vendor_portal_access`, `edi_config`, `vendor_catalog_items`)

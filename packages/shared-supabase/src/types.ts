@@ -15,6 +15,1046 @@ export type Database = {
   }
   public: {
     Tables: {
+      guest_profiles: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          first_name: string
+          last_name: string | null
+          email: string | null
+          phone: string | null
+          date_of_birth: string | null
+          notes: string | null
+          tags: any | null
+          preferences: any | null
+          created_at: string
+          updated_at: string | null
+          deleted_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          email?: string | null
+          phone?: string | null
+          date_of_birth?: string | null
+          notes?: string | null
+          tags?: any | null
+          preferences?: any | null
+          created_at?: string | null
+          updated_at?: string | null
+          deleted_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          first_name?: string | null
+          last_name?: string | null
+          email?: string | null
+          phone?: string | null
+          date_of_birth?: string | null
+          notes?: string | null
+          tags?: any | null
+          preferences?: any | null
+          created_at?: string | null
+          updated_at?: string | null
+          deleted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_profiles_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_profiles_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_profiles_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_profiles_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      guest_visits: {
+        Row: {
+          id: string | null
+          guest_profile_id: string
+          restaurant_id: string
+          visit_date: string
+          party_size: number
+          total_spent: number | null
+          source: string | null
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          guest_profile_id?: string | null
+          restaurant_id?: string | null
+          visit_date?: string | null
+          party_size?: number | null
+          total_spent?: number | null
+          source?: string | null
+          notes?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          guest_profile_id?: string | null
+          restaurant_id?: string | null
+          visit_date?: string | null
+          party_size?: number | null
+          total_spent?: number | null
+          source?: string | null
+          notes?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_visits_guest_profile_id_fkey",
+            columns: ["guest_profile_id"],
+            isOneToOne: false,
+            referencedRelation: "guest_profiles",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_visits_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_visits_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_visits_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_visits_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      loyalty_accounts: {
+        Row: {
+          id: string | null
+          guest_profile_id: string
+          restaurant_id: string
+          points_balance: number
+          lifetime_points: number
+          tier: string
+          enrolled_at: string
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          guest_profile_id?: string | null
+          restaurant_id?: string | null
+          points_balance?: number | null
+          lifetime_points?: number | null
+          tier?: string | null
+          enrolled_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          guest_profile_id?: string | null
+          restaurant_id?: string | null
+          points_balance?: number | null
+          lifetime_points?: number | null
+          tier?: string | null
+          enrolled_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_accounts_guest_profile_id_fkey",
+            columns: ["guest_profile_id"],
+            isOneToOne: false,
+            referencedRelation: "guest_profiles",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_accounts_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      loyalty_points_transactions: {
+        Row: {
+          id: string | null
+          loyalty_account_id: string
+          points: number
+          transaction_type: string
+          reference_type: string | null
+          reference_id: string | null
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          loyalty_account_id?: string | null
+          points?: number | null
+          transaction_type?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          description?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          loyalty_account_id?: string | null
+          points?: number | null
+          transaction_type?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          description?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_points_transactions_loyalty_account_id_fkey",
+            columns: ["loyalty_account_id"],
+            isOneToOne: false,
+            referencedRelation: "loyalty_accounts",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      loyalty_rewards: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          name: string
+          description: string | null
+          points_required: number
+          reward_type: string
+          reward_value: number | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          description?: string | null
+          points_required?: number | null
+          reward_type?: string | null
+          reward_value?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          description?: string | null
+          points_required?: number | null
+          reward_type?: string | null
+          reward_value?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "loyalty_rewards_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_rewards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_rewards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "loyalty_rewards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      floor_plans: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          name: string
+          layout_data: any | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          layout_data?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          layout_data?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "floor_plans_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "floor_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "floor_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "floor_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      restaurant_tables: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          floor_plan_id: string | null
+          table_number: string
+          capacity: number
+          section: string | null
+          position_x: number | null
+          position_y: number | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          floor_plan_id?: string | null
+          table_number?: string | null
+          capacity?: number | null
+          section?: string | null
+          position_x?: number | null
+          position_y?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          floor_plan_id?: string | null
+          table_number?: string | null
+          capacity?: number | null
+          section?: string | null
+          position_x?: number | null
+          position_y?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "restaurant_tables_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_tables_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_tables_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_tables_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "restaurant_tables_floor_plan_id_fkey",
+            columns: ["floor_plan_id"],
+            isOneToOne: false,
+            referencedRelation: "floor_plans",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reservations: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          guest_profile_id: string | null
+          reservation_date: string
+          reservation_time: string
+          party_size: number
+          status: string
+          special_requests: string | null
+          source: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          reservation_date?: string | null
+          reservation_time?: string | null
+          party_size?: number | null
+          status?: string | null
+          special_requests?: string | null
+          source?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          reservation_date?: string | null
+          reservation_time?: string | null
+          party_size?: number | null
+          status?: string | null
+          special_requests?: string | null
+          source?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_guest_profile_id_fkey",
+            columns: ["guest_profile_id"],
+            isOneToOne: false,
+            referencedRelation: "guest_profiles",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reservation_tables: {
+        Row: {
+          id: string | null
+          reservation_id: string
+          table_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          reservation_id?: string | null
+          table_id?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          reservation_id?: string | null
+          table_id?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservation_tables_reservation_id_fkey",
+            columns: ["reservation_id"],
+            isOneToOne: false,
+            referencedRelation: "reservations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservation_tables_table_id_fkey",
+            columns: ["table_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurant_tables",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      waitlist_entries: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          guest_name: string
+          phone: string | null
+          party_size: number
+          estimated_wait_minutes: number | null
+          status: string
+          notified_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_name?: string | null
+          phone?: string | null
+          party_size?: number | null
+          estimated_wait_minutes?: number | null
+          status?: string | null
+          notified_at?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_name?: string | null
+          phone?: string | null
+          party_size?: number | null
+          estimated_wait_minutes?: number | null
+          status?: string | null
+          notified_at?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_entries_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "waitlist_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      kds_stations: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          name: string
+          station_type: string
+          printer_name: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          station_type?: string | null
+          printer_name?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          station_type?: string | null
+          printer_name?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kds_stations_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kds_stations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kds_stations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kds_stations_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      kitchen_tickets: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          ticket_number: string
+          guest_name: string | null
+          table_number: string | null
+          status: string
+          priority: number
+          pos_transaction_id: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          ticket_number?: string | null
+          guest_name?: string | null
+          table_number?: string | null
+          status?: string | null
+          priority?: number | null
+          pos_transaction_id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          ticket_number?: string | null
+          guest_name?: string | null
+          table_number?: string | null
+          status?: string | null
+          priority?: number | null
+          pos_transaction_id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "kitchen_tickets_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kitchen_tickets_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kitchen_tickets_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "kitchen_tickets_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      ticket_items: {
+        Row: {
+          id: string | null
+          ticket_id: string
+          item_name: string
+          item_id: string | null
+          quantity: number
+          modifiers: any | null
+          status: string
+          station_id: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          ticket_id?: string | null
+          item_name?: string | null
+          item_id?: string | null
+          quantity?: number | null
+          modifiers?: any | null
+          status?: string | null
+          station_id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          ticket_id?: string | null
+          item_name?: string | null
+          item_id?: string | null
+          quantity?: number | null
+          modifiers?: any | null
+          status?: string | null
+          station_id?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_items_ticket_id_fkey",
+            columns: ["ticket_id"],
+            isOneToOne: false,
+            referencedRelation: "kitchen_tickets",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_items_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_items_station_id_fkey",
+            columns: ["station_id"],
+            isOneToOne: false,
+            referencedRelation: "kds_stations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      ticket_routing: {
+        Row: {
+          id: string | null
+          ticket_item_id: string
+          station_id: string
+          sequence_order: number
+          status: string
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          ticket_item_id?: string | null
+          station_id?: string | null
+          sequence_order?: number | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          ticket_item_id?: string | null
+          station_id?: string | null
+          sequence_order?: number | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_routing_ticket_item_id_fkey",
+            columns: ["ticket_item_id"],
+            isOneToOne: false,
+            referencedRelation: "ticket_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_routing_station_id_fkey",
+            columns: ["station_id"],
+            isOneToOne: false,
+            referencedRelation: "kds_stations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      guest_feedback: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          guest_profile_id: string | null
+          visit_date: string | null
+          rating: number
+          comment: string | null
+          category: string | null
+          source: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          visit_date?: string | null
+          rating?: number | null
+          comment?: string | null
+          category?: string | null
+          source?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          visit_date?: string | null
+          rating?: number | null
+          comment?: string | null
+          category?: string | null
+          source?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_feedback_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_feedback_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_feedback_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_feedback_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_feedback_guest_profile_id_fkey",
+            columns: ["guest_profile_id"],
+            isOneToOne: false,
+            referencedRelation: "guest_profiles",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      survey_responses: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          guest_profile_id: string | null
+          survey_name: string
+          question: string
+          response: string | null
+          response_score: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          survey_name?: string | null
+          question?: string | null
+          response?: string | null
+          response_score?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          guest_profile_id?: string | null
+          survey_name?: string | null
+          question?: string | null
+          response?: string | null
+          response_score?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "survey_responses_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "survey_responses_guest_profile_id_fkey",
+            columns: ["guest_profile_id"],
+            isOneToOne: false,
+            referencedRelation: "guest_profiles",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       shifts: {
         Row: {
           id: string | null
