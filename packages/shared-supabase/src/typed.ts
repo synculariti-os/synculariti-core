@@ -7,7 +7,7 @@ export const supabase = createBrowserSupabaseClient();
 
 /** Typed wrapper for `from` – guarantees the table name exists in the generated DB types */
 export function fromTyped<T extends keyof Database['public']['Tables']>(table: T) {
-  return supabase.from(table);
+  return supabase.from(table) as any;
 }
 
 /** Typed wrapper for RPC calls */

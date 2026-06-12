@@ -1,10 +1,10 @@
 # Synculariti Core — Plan
 
-## Status: Phases 1–8 ✅ — Guest Experience Complete
+## Status: Phases 1–9 ✅ — Enterprise Scale Complete
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Database**: Single `public` schema — IMS + ET tables unified (90 tables + 4 views)
+- **Database**: Single `public` schema — IMS + ET tables unified (107 tables + 4 views)
 - **Frontend**: `apps/web` (Next.js) with route groups `(ims)/ims/` and `(et)/et/`
 - **Backend**: `apps/ims/api` (NestJS) as primary API; ET features as Next.js API routes in `apps/web`
 - **Auth**: Supabase Auth as source of truth, synced to `users` table via trigger
@@ -52,15 +52,16 @@
 - Reservations, table management, floor plans, and waitlist
 - KDS foundation (stations, tickets, line items, routing)
 - Guest feedback and survey response collection
+- Vendor portal access, catalog sync, and EDI transaction logging
+- Commissary/central kitchen production planning and inter-location orders
+- Transfer pricing rules for inter-company cost allocation
+- Cost centers/profit centers with hierarchy and intercompany eliminations
+- Bank account management, transaction import, and reconciliation matching
+- Compliance layer: data retention policies, PII classification, GDPR request tracking
 
-### Critical Gaps (remaining after Phase 8)
-- **No vendor portal / EDI**
-- **No commissary/central kitchen**
-- **No cost centers / profit centers / intercompany**
-- **No bank reconciliation**
-- **No compliance layer (GDPR, PII)**
-
-Also: Schema Health Score pending recalibration — most core restaurant domains are now covered.
+### Critical Gaps (remaining after Phase 9)
+— All core restaurant operational domains covered.
+Remaining work is architectural (CQRS) and frontend.
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -163,12 +164,12 @@ Missing event store, projections, command/query separation, idempotent commands,
 - [x] 8.4 KDS foundation — `kds_stations`, `kitchen_tickets`, `ticket_items` (with modifiers/station routing), `ticket_routing`
 - [x] 8.5 Guest feedback — `guest_feedback` (rating + category), `survey_responses` (structured Q&A)
 
-### Phase 9: Enterprise Scale (P2–P3)
-- [ ] 9.1 Vendor portal / EDI (`vendor_portal_access`, `edi_config`, `vendor_catalog_items`)
-- [ ] 9.2 Commissary / central kitchen (`production_plans`, `commissary_orders`, `transfer_pricing_rules`)
-- [ ] 9.3 Cost centers / profit centers + intercompany eliminations
-- [ ] 9.4 Bank reconciliation (`bank_accounts`, `bank_transactions`, `reconciliation_entries`)
-- [ ] 9.5 Compliance layer: GDPR data export, data retention, PII tagging
+### Phase 9: Enterprise Scale ✅ COMPLETE
+- [x] 9.1 Vendor portal / EDI — `vendor_portal_access`, `vendor_catalog_items`, `edi_config`, `edi_transactions`
+- [x] 9.2 Commissary / central kitchen — `production_plans`, `production_plan_items`, `commissary_orders`, `commissary_order_items`, `transfer_pricing_rules`
+- [x] 9.3 Cost centers / profit centers — `cost_centers` (hierarchical), `intercompany_transactions` (with elimination tracking)
+- [x] 9.4 Bank reconciliation — `bank_accounts`, `bank_transactions`, `reconciliation_entries`
+- [x] 9.5 Compliance layer — `data_retention_policies`, `pii_data_classification`, `gdpr_export_requests`
 
 ### Phase 10: CQRS Migration (P3 — When Needed)
 - [ ] 10.1 Append-only event store (from 5.1) — full schema

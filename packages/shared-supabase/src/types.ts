@@ -15,6 +15,954 @@ export type Database = {
   }
   public: {
     Tables: {
+      vendor_portal_access: {
+        Row: {
+          id: string | null
+          vendor_id: string
+          email: string
+          password_hash: string | null
+          is_active: boolean
+          last_login: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          vendor_id?: string | null
+          email?: string | null
+          password_hash?: string | null
+          is_active?: boolean | null
+          last_login?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          vendor_id?: string | null
+          email?: string | null
+          password_hash?: string | null
+          is_active?: boolean | null
+          last_login?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_portal_access_vendor_id_fkey",
+            columns: ["vendor_id"],
+            isOneToOne: false,
+            referencedRelation: "vendors",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      vendor_catalog_items: {
+        Row: {
+          id: string | null
+          vendor_id: string
+          item_id: string | null
+          vendor_sku: string
+          vendor_item_name: string
+          unit_price: number
+          uom: string
+          lead_time_days: number | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          vendor_id?: string | null
+          item_id?: string | null
+          vendor_sku?: string | null
+          vendor_item_name?: string | null
+          unit_price?: number | null
+          uom?: string | null
+          lead_time_days?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          vendor_id?: string | null
+          item_id?: string | null
+          vendor_sku?: string | null
+          vendor_item_name?: string | null
+          unit_price?: number | null
+          uom?: string | null
+          lead_time_days?: number | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_catalog_items_vendor_id_fkey",
+            columns: ["vendor_id"],
+            isOneToOne: false,
+            referencedRelation: "vendors",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_catalog_items_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_catalog_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_catalog_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      edi_config: {
+        Row: {
+          id: string | null
+          vendor_id: string
+          protocol: string
+          endpoint_url: string | null
+          credentials: any | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          vendor_id?: string | null
+          protocol?: string | null
+          endpoint_url?: string | null
+          credentials?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          vendor_id?: string | null
+          protocol?: string | null
+          endpoint_url?: string | null
+          credentials?: any | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "edi_config_vendor_id_fkey",
+            columns: ["vendor_id"],
+            isOneToOne: false,
+            referencedRelation: "vendors",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      edi_transactions: {
+        Row: {
+          id: string | null
+          vendor_id: string
+          direction: string
+          message_type: string
+          payload: any | null
+          status: string
+          error: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          vendor_id?: string | null
+          direction?: string | null
+          message_type?: string | null
+          payload?: any | null
+          status?: string | null
+          error?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          vendor_id?: string | null
+          direction?: string | null
+          message_type?: string | null
+          payload?: any | null
+          status?: string | null
+          error?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "edi_transactions_vendor_id_fkey",
+            columns: ["vendor_id"],
+            isOneToOne: false,
+            referencedRelation: "vendors",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      production_plans: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          plan_name: string
+          plan_date: string
+          status: string
+          notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          plan_name?: string | null
+          plan_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          plan_name?: string | null
+          plan_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_plans_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plans_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      production_plan_items: {
+        Row: {
+          id: string | null
+          production_plan_id: string
+          recipe_id: string
+          planned_qty: number
+          actual_qty: number | null
+          uom: string
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          production_plan_id?: string | null
+          recipe_id?: string | null
+          planned_qty?: number | null
+          actual_qty?: number | null
+          uom?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          production_plan_id?: string | null
+          recipe_id?: string | null
+          planned_qty?: number | null
+          actual_qty?: number | null
+          uom?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "production_plan_items_production_plan_id_fkey",
+            columns: ["production_plan_id"],
+            isOneToOne: false,
+            referencedRelation: "production_plans",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "production_plan_items_recipe_id_fkey",
+            columns: ["recipe_id"],
+            isOneToOne: false,
+            referencedRelation: "recipes",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      commissary_orders: {
+        Row: {
+          id: string | null
+          commissary_location_id: string
+          destination_restaurant_id: string
+          order_date: string
+          status: string
+          notes: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          commissary_location_id?: string | null
+          destination_restaurant_id?: string | null
+          order_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          commissary_location_id?: string | null
+          destination_restaurant_id?: string | null
+          order_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissary_orders_commissary_location_id_fkey",
+            columns: ["commissary_location_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_commissary_location_id_fkey__locations",
+            columns: ["commissary_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_commissary_location_id_fkey__locations",
+            columns: ["commissary_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_commissary_location_id_fkey__locations",
+            columns: ["commissary_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_destination_restaurant_id_fkey",
+            columns: ["destination_restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_destination_restaurant_id_fkey__locations",
+            columns: ["destination_restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_destination_restaurant_id_fkey__locations",
+            columns: ["destination_restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_orders_destination_restaurant_id_fkey__locations",
+            columns: ["destination_restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      commissary_order_items: {
+        Row: {
+          id: string | null
+          commissary_order_id: string
+          item_id: string
+          quantity_ordered: number
+          quantity_shipped: number | null
+          quantity_received: number | null
+          unit_price: number
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          commissary_order_id?: string | null
+          item_id?: string | null
+          quantity_ordered?: number | null
+          quantity_shipped?: number | null
+          quantity_received?: number | null
+          unit_price?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          commissary_order_id?: string | null
+          item_id?: string | null
+          quantity_ordered?: number | null
+          quantity_shipped?: number | null
+          quantity_received?: number | null
+          unit_price?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "commissary_order_items_commissary_order_id_fkey",
+            columns: ["commissary_order_id"],
+            isOneToOne: false,
+            referencedRelation: "commissary_orders",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_order_items_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_order_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "commissary_order_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      transfer_pricing_rules: {
+        Row: {
+          id: string | null
+          from_location_id: string
+          to_location_id: string | null
+          item_id: string | null
+          markup_percent: number
+          effective_from: string
+          effective_to: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          from_location_id?: string | null
+          to_location_id?: string | null
+          item_id?: string | null
+          markup_percent?: number | null
+          effective_from?: string | null
+          effective_to?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          from_location_id?: string | null
+          to_location_id?: string | null
+          item_id?: string | null
+          markup_percent?: number | null
+          effective_from?: string | null
+          effective_to?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transfer_pricing_rules_from_location_id_fkey",
+            columns: ["from_location_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_from_location_id_fkey__locations",
+            columns: ["from_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_from_location_id_fkey__locations",
+            columns: ["from_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_from_location_id_fkey__locations",
+            columns: ["from_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_to_location_id_fkey",
+            columns: ["to_location_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_to_location_id_fkey__locations",
+            columns: ["to_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_to_location_id_fkey__locations",
+            columns: ["to_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_to_location_id_fkey__locations",
+            columns: ["to_location_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transfer_pricing_rules_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      cost_centers: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          name: string
+          code: string | null
+          type: string
+          parent_id: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          code?: string | null
+          type?: string | null
+          parent_id?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          code?: string | null
+          type?: string | null
+          parent_id?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cost_centers_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cost_centers_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cost_centers_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cost_centers_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cost_centers_parent_id_fkey",
+            columns: ["parent_id"],
+            isOneToOne: false,
+            referencedRelation: "cost_centers",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      intercompany_transactions: {
+        Row: {
+          id: string | null
+          from_center_id: string
+          to_center_id: string
+          amount: number
+          currency: string
+          description: string | null
+          transaction_date: string
+          is_eliminated: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          from_center_id?: string | null
+          to_center_id?: string | null
+          amount?: number | null
+          currency?: string | null
+          description?: string | null
+          transaction_date?: string | null
+          is_eliminated?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          from_center_id?: string | null
+          to_center_id?: string | null
+          amount?: number | null
+          currency?: string | null
+          description?: string | null
+          transaction_date?: string | null
+          is_eliminated?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intercompany_transactions_from_center_id_fkey",
+            columns: ["from_center_id"],
+            isOneToOne: false,
+            referencedRelation: "cost_centers",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "intercompany_transactions_to_center_id_fkey",
+            columns: ["to_center_id"],
+            isOneToOne: false,
+            referencedRelation: "cost_centers",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      bank_accounts: {
+        Row: {
+          id: string | null
+          restaurant_id: string | null
+          account_name: string
+          account_number: string
+          bank_name: string
+          currency: string
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          account_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          currency?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          account_name?: string | null
+          account_number?: string | null
+          bank_name?: string | null
+          currency?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_accounts_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bank_accounts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      bank_transactions: {
+        Row: {
+          id: string | null
+          bank_account_id: string
+          transaction_date: string
+          description: string
+          amount: number
+          reference: string | null
+          category: string | null
+          is_reconciled: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          bank_account_id?: string | null
+          transaction_date?: string | null
+          description?: string | null
+          amount?: number | null
+          reference?: string | null
+          category?: string | null
+          is_reconciled?: boolean | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          bank_account_id?: string | null
+          transaction_date?: string | null
+          description?: string | null
+          amount?: number | null
+          reference?: string | null
+          category?: string | null
+          is_reconciled?: boolean | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bank_transactions_bank_account_id_fkey",
+            columns: ["bank_account_id"],
+            isOneToOne: false,
+            referencedRelation: "bank_accounts",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      reconciliation_entries: {
+        Row: {
+          id: string | null
+          bank_transaction_id: string
+          reconciled_to_type: string
+          reconciled_to_id: string
+          amount: number
+          status: string
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          bank_transaction_id?: string | null
+          reconciled_to_type?: string | null
+          reconciled_to_id?: string | null
+          amount?: number | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          bank_transaction_id?: string | null
+          reconciled_to_type?: string | null
+          reconciled_to_id?: string | null
+          amount?: number | null
+          status?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reconciliation_entries_bank_transaction_id_fkey",
+            columns: ["bank_transaction_id"],
+            isOneToOne: false,
+            referencedRelation: "bank_transactions",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      data_retention_policies: {
+        Row: {
+          id: string | null
+          table_name: string
+          retention_days: number
+          archive_to: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          table_name?: string | null
+          retention_days?: number | null
+          archive_to?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          table_name?: string | null
+          retention_days?: number | null
+          archive_to?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      pii_data_classification: {
+        Row: {
+          id: string | null
+          table_name: string
+          column_name: string
+          classification: string
+          is_encrypted: boolean
+          notes: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          table_name?: string | null
+          column_name?: string | null
+          classification?: string | null
+          is_encrypted?: boolean | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          table_name?: string | null
+          column_name?: string | null
+          classification?: string | null
+          is_encrypted?: boolean | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      gdpr_export_requests: {
+        Row: {
+          id: string | null
+          request_type: string
+          requestor_email: string
+          status: string
+          data: any | null
+          completed_at: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          request_type?: string | null
+          requestor_email?: string | null
+          status?: string | null
+          data?: any | null
+          completed_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          request_type?: string | null
+          requestor_email?: string | null
+          status?: string | null
+          data?: any | null
+          completed_at?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
       guest_profiles: {
         Row: {
           id: string | null
