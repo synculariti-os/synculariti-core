@@ -66,7 +66,7 @@
 
 ### Critical Gaps (remaining after Phase 10)
 — All core operational domains + CQRS foundation complete.
-Remaining work: NestJS command/query/event bus wiring, shared UI extraction, frontend deployment.
+Remaining work: Retrofit existing HITL/manual workflows into saga orchestrator (Phase 10b), NestJS command/query/event bus wiring, shared UI extraction, frontend deployment.
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -183,6 +183,18 @@ Missing event store, projections, command/query separation, idempotent commands,
 - [x] 10.4 Command/Query separation — DB foundation laid; NestJS refactor (command bus, query bus, event bus) remains application-level
 - [x] 10.5 Saga orchestrator — `saga_definitions`, `saga_instances`, `saga_steps` tables; `start_saga()`, `advance_saga()`, `fail_saga()` functions; 3 seeded sagas (Procure-to-Pay, Commissary Transfer, Guest Loyalty)
 - [x] 10.6 Read model rebuild — `rebuild_projection()` (REFRESH MATERIALIZED VIEW CONCURRENTLY), `rebuild_stale_projections()`, `take_aggregate_snapshot()`, `aggregate_snapshots` table
+
+### Phase 10b: Saga-Driven Workflows (Future — Formalise HITL & Multi-Step Processes)
+- [ ] **10b.1 Three-way match (retrofit)** — wire existing `goods_receipts`/`three_way_match_results` triggers → `start_saga('procure_to_pay')`, `advance_saga('goods.receipt.confirmed')`, `advance_saga('invoice.match.verified')` / `fail_saga('invoice.match.failed')`
+- [ ] **10b.2 POS ingestion HITL** — anomalous `sales_import_rows` trigger WhatsApp outbox HITL flow → formalised as saga with `sales_import.submitted`, `.approved`, `.rejected` events
+- [ ] **10b.3 Inventory count variance approval** — count completes with variance → saga: `inventory.count.completed` → supervisor approval step → `inventory.batch.adjusted` or rollback
+- [ ] **10b.4 Receipt scanning → extraction → approval** — OCR receipt → saga with `receipt.scanned`, `.data_extracted`, `.approved`, `.rejected`; HITL on extraction confidence < threshold
+- [ ] **10b.5 Vendor onboarding** — vendor application → saga: `vendor.registered`, `.documents_uploaded`, `.approved`, `.onboarded`; HITL at approval gate
+- [ ] **10b.6 Employee time-entry approval** — `time_entry.submitted` → saga: manager approval / auto-approve if within threshold → `time_entry.approved` or `.rejected`
+- [ ] **10b.7 Guest feedback resolution** — `guest_feedback` created → saga: alert manager → `.acknowledged` → `.resolved` or `.escalated`; HITL at escalation
+- [ ] **10b.8 Bank reconciliation match HITL** — `bank_transactions` with no auto-match → saga: `reconciliation.pending` → human review → `.matched` or `.unmatched`
+- [ ] **10b.9 Loyalty tier overrides & manual adjustments** — points adjustment request → saga: `.requested` → supervisor approval → `.approved` or `.rejected`
+- [ ] **10b.10 Menu version publishing approval** — menu version `.staged` → HITL approval gate → `.published` or `.rolled_back`
 
 ### Phase 11: Shared UI & Production
 - [ ] 11.1 Extract @synculariti/shared-ui from IMS + ET
