@@ -15,6 +15,329 @@ export type Database = {
   }
   public: {
     Tables: {
+      notification_rules: {
+        Row: {
+          id: string | null
+          event_type: string
+          scope_type: string
+          scope_id: string | null
+          target_role: string
+          channel: string
+          priority: string
+          title_template: string
+          body_template: string | null
+          action_url_template: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          event_type?: string | null
+          scope_type?: string | null
+          scope_id?: string | null
+          target_role?: string | null
+          channel?: string | null
+          priority?: string | null
+          title_template?: string | null
+          body_template?: string | null
+          action_url_template?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          event_type?: string | null
+          scope_type?: string | null
+          scope_id?: string | null
+          target_role?: string | null
+          channel?: string | null
+          priority?: string | null
+          title_template?: string | null
+          body_template?: string | null
+          action_url_template?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+
+        ]
+      }
+      user_notification_preferences: {
+        Row: {
+          id: string | null
+          user_id: string
+          channel: string
+          is_enabled: boolean
+          quiet_hours_start: string | null
+          quiet_hours_end: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          user_id?: string | null
+          channel?: string | null
+          is_enabled?: boolean | null
+          quiet_hours_start?: string | null
+          quiet_hours_end?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          user_id?: string | null
+          channel?: string | null
+          is_enabled?: boolean | null
+          quiet_hours_start?: string | null
+          quiet_hours_end?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_notification_preferences_user_id_fkey",
+            columns: ["user_id"],
+            isOneToOne: false,
+            referencedRelation: "users",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      notification_queue: {
+        Row: {
+          id: string | null
+          event_type: string
+          title: string
+          body: string | null
+          priority: string
+          reference_type: string | null
+          reference_id: string | null
+          source: string | null
+          metadata: any
+          restaurant_id: string | null
+          franchise_group_id: string | null
+          is_routed: boolean
+          routed_at: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          event_type?: string | null
+          title?: string | null
+          body?: string | null
+          priority?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          source?: string | null
+          metadata?: any | null
+          restaurant_id?: string | null
+          franchise_group_id?: string | null
+          is_routed?: boolean | null
+          routed_at?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          event_type?: string | null
+          title?: string | null
+          body?: string | null
+          priority?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          source?: string | null
+          metadata?: any | null
+          restaurant_id?: string | null
+          franchise_group_id?: string | null
+          is_routed?: boolean | null
+          routed_at?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_queue_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_franchise_group_id_fkey",
+            columns: ["franchise_group_id"],
+            isOneToOne: false,
+            referencedRelation: "franchise_groups",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_franchise_group_id_fkey__tenants",
+            columns: ["franchise_group_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_franchise_group_id_fkey__tenants",
+            columns: ["franchise_group_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_queue_franchise_group_id_fkey__tenants",
+            columns: ["franchise_group_id"],
+            isOneToOne: false,
+            referencedRelation: "tenants",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      notification_attempts: {
+        Row: {
+          id: string | null
+          notification_queue_id: string
+          user_id: string
+          channel: string
+          status: string
+          whatsapp_outbox_id: string | null
+          delivered_at: string | null
+          read_at: string | null
+          failed_at: string | null
+          error: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          notification_queue_id?: string | null
+          user_id?: string | null
+          channel?: string | null
+          status?: string | null
+          whatsapp_outbox_id?: string | null
+          delivered_at?: string | null
+          read_at?: string | null
+          failed_at?: string | null
+          error?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          notification_queue_id?: string | null
+          user_id?: string | null
+          channel?: string | null
+          status?: string | null
+          whatsapp_outbox_id?: string | null
+          delivered_at?: string | null
+          read_at?: string | null
+          failed_at?: string | null
+          error?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_attempts_notification_queue_id_fkey",
+            columns: ["notification_queue_id"],
+            isOneToOne: false,
+            referencedRelation: "notification_queue",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_attempts_user_id_fkey",
+            columns: ["user_id"],
+            isOneToOne: false,
+            referencedRelation: "users",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notification_attempts_whatsapp_outbox_id_fkey",
+            columns: ["whatsapp_outbox_id"],
+            isOneToOne: false,
+            referencedRelation: "whatsapp_outbox",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      in_app_notifications: {
+        Row: {
+          id: string | null
+          notification_attempt_id: string
+          user_id: string
+          title: string
+          body: string | null
+          is_read: boolean
+          read_at: string | null
+          action_url: string | null
+          reference_type: string | null
+          reference_id: string | null
+          priority: string
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          notification_attempt_id?: string | null
+          user_id?: string | null
+          title?: string | null
+          body?: string | null
+          is_read?: boolean | null
+          read_at?: string | null
+          action_url?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          priority?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          notification_attempt_id?: string | null
+          user_id?: string | null
+          title?: string | null
+          body?: string | null
+          is_read?: boolean | null
+          read_at?: string | null
+          action_url?: string | null
+          reference_type?: string | null
+          reference_id?: string | null
+          priority?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "in_app_notifications_notification_attempt_id_fkey",
+            columns: ["notification_attempt_id"],
+            isOneToOne: false,
+            referencedRelation: "notification_attempts",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "in_app_notifications_user_id_fkey",
+            columns: ["user_id"],
+            isOneToOne: false,
+            referencedRelation: "users",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       domain_events: {
         Row: {
           id: string | null

@@ -1,10 +1,10 @@
 # Synculariti Core — Plan
 
-## Status: Phases 1–10b ✅ — Three-Way Match Sagafied
+## Status: Phases 1–10b ✅ — Notifications + IMS→WhatsApp Wired
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Database**: Single `public` schema — IMS + ET tables unified (113 tables + 4 views + 5 MVs)
+- **Database**: Single `public` schema — IMS + ET tables unified (118 tables + 4 views + 5 MVs)
 - **Frontend**: `apps/web` (Next.js) with route groups `(ims)/ims/` and `(et)/et/`
 - **Backend**: `apps/ims/api` (NestJS) as primary API; ET features as Next.js API routes in `apps/web`
 - **Auth**: Supabase Auth as source of truth, synced to `users` table via trigger
@@ -63,10 +63,12 @@
 - Saga orchestrator: saga_definitions, saga_instances, saga_steps with Procure-to-Pay, Commissary Transfer, and Guest Loyalty workflows
 - Projection tracking and rebuild automation (5 materialized views)
 - Aggregate snapshots for fast state rebuild from event stream
+- Notification routing system: rule-based fan-out (event_type × role → in_app + WhatsApp), IMS→WhatsApp gap closed via `route_notification()` RPC
 
 ### Critical Gaps (remaining after Phase 10)
-— All core operational domains + CQRS foundation complete.
-Remaining work: Retrofit existing HITL/manual workflows into saga orchestrator (Phase 10b), NestJS command/query/event bus wiring, shared UI extraction, frontend deployment.
+— All core operational domains + CQRS + notification routing complete.
+IMS→WhatsApp gap resolved via `route_notification()` RPC.
+Remaining work: Retrofit remaining HITL workflows into saga orchestrator (10b.2–10b.10), NestJS command/query/event bus wiring (10.4), shared UI extraction (Phase 11).
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -186,6 +188,7 @@ Missing event store, projections, command/query separation, idempotent commands,
 
 ### Phase 10b: Saga-Driven Workflows (Future — Formalise HITL & Multi-Step Processes)
 - [x] **10b.1 Three-way match (retrofit)** — wire existing `goods_receipts`/`three_way_match_results` triggers → `start_saga('procure_to_pay')`, `advance_saga('goods.receipt.confirmed')`, `advance_saga('invoice.match.verified')` / `fail_saga('invoice.match.failed')`
+- [x] **10b.11 Notification routing system** — `notification_rules` (event_type → role → channel), `notification_queue`, `notification_attempts` (per-recipient/channel tracking), `in_app_notifications` (persisted inbox), `user_notification_preferences` (opt-out + quiet hours). `route_notification()` RPC fans out to in-app + WhatsApp based on rules. IMS (NestJS) gap closed: IMS calls `route_notification()` via Supabase admin client. Auto-trigger on `domain_events` INSERT.
 - [ ] **10b.2 POS ingestion HITL** — anomalous `sales_import_rows` trigger WhatsApp outbox HITL flow → formalised as saga with `sales_import.submitted`, `.approved`, `.rejected` events
 - [ ] **10b.3 Inventory count variance approval** — count completes with variance → saga: `inventory.count.completed` → supervisor approval step → `inventory.batch.adjusted` or rollback
 - [ ] **10b.4 Receipt scanning → extraction → approval** — OCR receipt → saga with `receipt.scanned`, `.data_extracted`, `.approved`, `.rejected`; HITL on extraction confidence < threshold
