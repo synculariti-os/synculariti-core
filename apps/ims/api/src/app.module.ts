@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { SupabaseAuthGuard } from './common/guards/supabase-auth.guard';
 import { PermissionsGuard } from './common/guards/permissions.guard';
 import { TenantContextInterceptor } from './common/interceptors/tenant-context.interceptor';
@@ -19,11 +21,22 @@ import { InventoryModule } from './inventory/inventory.module';
 import { ReportingModule } from './reporting/reporting.module';
 import { AuditModule } from './audit/audit.module';
 import { SettingsModule } from './settings/settings.module';
+import { ExternalModule } from './external/external.module';
 
 const redisUrl = process.env.REDIS_URL ? new URL(process.env.REDIS_URL) : null;
+const spaPath = process.env.SPA_PATH || join(__dirname, '..', '..', '..', 'web', 'out');
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: spaPath,
+      serveStaticOptions: {
+        extensions: ['html'],
+        index: ['index.html'],
+      },
+      exclude: ['/api/{*path}', '/api/docs', '/api/json'],
+      renderPath: '*',
+    }),
     CoreModule,
     BullModule.forRoot({
       connection: redisUrl
@@ -49,6 +62,7 @@ const redisUrl = process.env.REDIS_URL ? new URL(process.env.REDIS_URL) : null;
     ReportingModule,
     AuditModule,
     SettingsModule,
+    ExternalModule,
   ],
   controllers: [AppController],
   providers: [

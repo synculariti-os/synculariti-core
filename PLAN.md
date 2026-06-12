@@ -80,18 +80,19 @@ The schema is complete (118 tables, 5 materialized views, CQRS foundation, saga 
 - [ ] **3.9** At this point, Next.js is a pure SPA build tool. Zero server-side code remains.
 
 ## Phase 4: One deploy
-- [ ] **4.1** Single Dockerfile at repo root (not inside `apps/ims/api/`)
-- [ ] **4.2** CI pipeline: `pnpm install → pnpm lint → pnpm type-check → pnpm test → pnpm build`
-- [ ] **4.3** Deploy on Railway: single service, single `CMD node dist/main`
-- [ ] **4.4** One domain → `www.synculariti.com`
+- [x] **4.1** Single Dockerfile at repo root (not inside `apps/ims/api/`)
+- [~] **4.2** CI pipeline partially done — `pnpm build` works in Docker
+- [~] **4.3** Docker image built & tested (`/health` → OK). Railway deploy setup documented in `DEPLOY.md`
+- [~] **4.4** One domain — user will configure in Railway dashboard
 - [ ] **4.5** Supabase Realtime consumed client-side for in-app notifications
-- [ ] **4.6** Archive `Vercel.md` — no longer relevant
+- [x] **4.6** `Vercel.md` replaced with `DEPLOY.md` covering Railway + Docker
 - [ ] **4.7** Delete `turbo.json` — single project, no monorepo build tooling needed
 
 ## Reference
 - Schema: 118 tables, 4 views, 5 materialized views
 - CQRS: Event store, saga orchestrator, notification routing (all built)
-- NestJS API: 8 modules, 102 source files, 9,128 lines
+- NestJS API: 8 modules, 106 source files, SWC build
+- Docker: Multi-stage (node:22-bookworm-slim), 1.1 GB image
 - Frontend SPA: 347 components/pages, all under `apps/web/src/`
 
 ## Previously achieved (archived)

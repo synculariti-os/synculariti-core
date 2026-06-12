@@ -10,10 +10,10 @@ dns.setDefaultResultOrder('ipv4first');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   // Enable CORS
   app.enableCors();
-  
+
   // Swagger/OpenAPI setup
   const config = new DocumentBuilder()
     .setTitle('Synculariti IMS API')
@@ -32,10 +32,10 @@ async function bootstrap() {
     .addTag('auth', 'Authentication')
     .addTag('tenant', 'Tenant management')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
-  
+
   // Also expose raw JSON spec at /api/json
   app.use('/api/json', (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'application/json');

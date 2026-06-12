@@ -199,7 +199,7 @@ export function RecipesTable() {
               try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/recipes/upload/template`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/recipes/upload/template`, {
                   headers: { 'Authorization': `Bearer ${session.access_token}` },
                 });
                 if (!res.ok) throw new Error('Failed to download template');
@@ -443,7 +443,7 @@ export function RecipesTable() {
                         const formData = new FormData();
                         formData.append('file', uploadFile);
 
-                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/recipes/upload`, {
+                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/recipes/upload`, {
                           method: 'POST',
                           headers: {
                             'Authorization': `Bearer ${session.access_token}`,

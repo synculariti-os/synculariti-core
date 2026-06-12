@@ -82,9 +82,9 @@ export default function SalesImportPage() {
       }
 
       console.log('Using API URL:', process.env.NEXT_PUBLIC_API_URL);
-      console.log('Sending request to:', `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/sales-imports/upload`);
+      console.log('Sending request to:', `${process.env.NEXT_PUBLIC_API_URL || ''}/sales-imports/upload`);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/sales-imports/upload`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/sales-imports/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${session.access_token}`,

@@ -174,7 +174,7 @@ export function ItemsTable() {
               try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/items/upload/template`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/items/upload/template`, {
                   headers: { 'Authorization': `Bearer ${session.access_token}` },
                 });
                 if (!res.ok) throw new Error('Failed to download template');
@@ -524,7 +524,7 @@ export function ItemsTable() {
                         const formData = new FormData();
                         formData.append('file', uploadFile);
 
-                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/items/upload`, {
+                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/items/upload`, {
                           method: 'POST',
                           headers: {
                             'Authorization': `Bearer ${session.access_token}`,

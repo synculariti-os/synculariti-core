@@ -11,7 +11,7 @@ function getSupabase() {
   return _supabase;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/ims';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
 
 type FetchOptions = Omit<RequestInit, 'body'> & {
   params?: Record<string, string | number | boolean | undefined>;

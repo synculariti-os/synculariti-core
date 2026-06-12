@@ -118,7 +118,7 @@ export function VendorsTable() {
               try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/procurement/vendors/upload/template`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/procurement/vendors/upload/template`, {
                   headers: { 'Authorization': `Bearer ${session.access_token}` },
                 });
                 if (!res.ok) throw new Error('Failed to download template');
@@ -335,7 +335,7 @@ export function VendorsTable() {
                         const formData = new FormData();
                         formData.append('file', uploadFile);
 
-                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/procurement/vendors/upload`, {
+                        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/procurement/vendors/upload`, {
                           method: 'POST',
                           headers: {
                             'Authorization': `Bearer ${session.access_token}`,

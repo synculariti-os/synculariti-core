@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
+  output: 'export',
+  images: { unoptimized: true },
   transpilePackages: [
     '@synculariti/types',
     '@synculariti/validators',
@@ -10,15 +11,6 @@ const nextConfig: NextConfig = {
     '@synculariti/shared-utils',
     '@synculariti/shared-supabase',
   ],
-  async rewrites() {
-    return [
-      {
-        source: "/ekasa-proxy/:match*",
-        destination: "https://ekasa.financnasprava.sk/mdu/api/v1/opd/:match*",
-      },
-    ];
-  },
 };
 
-const withNextIntl = createNextIntlPlugin();
-export default withNextIntl(nextConfig);
+export default nextConfig;

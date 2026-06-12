@@ -29,7 +29,7 @@ export function BatchesTable({ initialBatches = [] }: { initialBatches?: SalesIm
         const { data: { session } } = await supabase.auth.getSession();
         if (!session || !restaurantId) return;
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/sales-imports?limit=20`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/sales-imports?limit=20`, {
           headers: {
             'Authorization': `Bearer ${session.access_token}`,
             'x-restaurant-id': restaurantId,
