@@ -97,19 +97,27 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_mv_cogs_by_recipe_pk
 ON public.mv_cogs_by_recipe (location_id, recipe_id, production_date, COALESCE(prep_item_id::text, ''));
 
 -- 6.4 mv_prime_cost — COGS + labor prime cost per location/period
--- NOTE: labor_cost = 0 placeholder until Phase 7.1 (labor management) is implemented
 CREATE MATERIALIZED VIEW IF NOT EXISTS public.mv_prime_cost AS
 SELECT
-  ppl.restaurant_id AS location_id,
-  ppl.produced_at::date AS business_date,
+  COALESCE(ppl.restaurant_id, lca.restaurant_id) AS location_id,
+  COALESCE(ppl.business_date, lca.business_date) AS business_date,
   COALESCE(SUM(mv.estimated_ingredient_cost), 0) AS total_cogs,
-  0 AS total_labor_cost, -- placeholder until Phase 7.1
-  COALESCE(SUM(mv.estimated_ingredient_cost), 0) AS prime_cost,
-  0 AS revenue, -- placeholder; sales revenue attribution by day/location available in mv_daily_sales_summary
+  COALESCE(SUM(lca.total_wages), 0) AS total_labor_cost,
+  COALESCE(SUM(mv.estimated_ingredient_cost), 0) + COALESCE(SUM(lca.total_wages), 0) AS prime_cost,
+  COALESCE(SUM(ds.total_revenue), 0) AS revenue,
   NOW() AS computed_at
-FROM prep_production_logs ppl
-LEFT JOIN mv_cogs_by_recipe mv ON mv.prep_item_id = ppl.prep_item_id AND mv.production_date = ppl.produced_at::date
-GROUP BY ppl.restaurant_id, ppl.produced_at::date
+FROM (
+  SELECT DISTINCT restaurant_id, produced_at::date AS business_date
+  FROM prep_production_logs
+) ppl
+FULL JOIN (
+  SELECT restaurant_id, period_start AS business_date, total_wages
+  FROM labor_cost_actuals
+) lca ON ppl.restaurant_id = lca.restaurant_id AND ppl.business_date = lca.business_date
+LEFT JOIN mv_cogs_by_recipe mv ON mv.location_id = ppl.restaurant_id AND mv.production_date = ppl.business_date
+LEFT JOIN mv_daily_sales_summary ds ON ds.location_id = COALESCE(ppl.restaurant_id, lca.restaurant_id)
+  AND ds.business_date = COALESCE(ppl.business_date, lca.business_date)
+GROUP BY COALESCE(ppl.restaurant_id, lca.restaurant_id), COALESCE(ppl.business_date, lca.business_date)
 WITH NO DATA;
 
 CREATE UNIQUE INDEX IF NOT EXISTS idx_mv_prime_cost_pk
