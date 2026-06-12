@@ -172,6 +172,66 @@ docker run -d \
 
 ---
 
+### Loading environment variables from local `.env` files (CLI)
+
+Both Railway and Vercel keep secrets out of the repository. You can populate them from the local `.env` you already have.
+
+#### Railway
+```bash
+# From the repo root – ensure you are logged in (`railway login`)
+# This script reads each KEY=VALUE line and sets it in Railway
+while IFS='=' read -r key value; do
+  # Skip empty lines and comments
+  [[ -z "$key" || "$key" =~ ^# ]] && continue
+  railway variables set "$key" "$value"
+done < .env
+```
+Alternatively, add them one‑by‑one:
+```bash
+railway variables set SUPABASE_URL "$(grep ^SUPABASE_URL .env | cut -d'=' -f2-)"
+# repeat for each variable …
+```
+The values are stored securely in Railway’s dashboard and are injected at runtime.
+
+#### Vercel
+```bash
+# From the `apps/web` directory (where Vercel project is linked)
+while IFS='=' read -r key value; do
+  [[ -z "$key" || "$key" =~ ^# ]] && continue
+  # Add to all three environments – adjust as needed
+  vercel env add "$key" production <<< "$value"
+  vercel env add "$key" preview   <<< "$value"
+  vercel env add "$key" development <<< "$value"
+done < ../../.env
+```
+`vercel env add` will prompt for the value; piping with `<<<` feeds it automatically.
+
+> **Important:** Do **not** commit `.env` files. They are already ignored via `.gitignore`.
+
+---
+
+
+### Required (all deployments)
+
+| Variable | Notes |
+|----------|-------|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Secret — do not expose to client |
+| `DATABASE_URL` | Direct Postgres connection string (`postgresql://...`) |
+| `REDIS_URL` | Redis connection string (`redis://...`) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Same as `SUPABASE_URL` — needed for client-side Supabase calls |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon key — safe for client |
+
+### Optional
+
+| Variable | Default | Notes |
+|----------|---------|-------|
+| `PORT` | `3001` | Railway sets this automatically |
+| `NEXT_PUBLIC_API_URL` | `''` (same-origin) | Override for proxied setups |
+| `NODE_ENV` | `production` | |
+
+---
+
 ## 5. Build troubleshooting
 
 | Symptom | Fix |
