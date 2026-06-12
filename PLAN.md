@@ -1,10 +1,10 @@
 # Synculariti Core — Plan
 
-## Status: Phase 5 ✅ Phase 6 ✅ — Read Models & Analytics Complete
+## Status: Phase 5 ✅ Phase 6 ✅ Phase 7 ✅ — Domain Expansion Complete
 
 ## Architecture
 - **Monorepo**: Turborepo with pnpm workspaces
-- **Database**: Single `public` schema — IMS + ET tables unified (56 tables + 4 views)
+- **Database**: Single `public` schema — IMS + ET tables unified (74 tables + 4 views)
 - **Frontend**: `apps/web` (Next.js) with route groups `(ims)/ims/` and `(et)/et/`
 - **Backend**: `apps/ims/api` (NestJS) as primary API; ET features as Next.js API routes in `apps/web`
 - **Auth**: Supabase Auth as source of truth, synced to `users` table via trigger
@@ -30,7 +30,7 @@
 | `@synculariti/whatsapp-client` | WhatsApp Business API client | ✅ Active |
 | `@synculariti/config` | Shared ESLint/TypeScript config | ✅ Active |
 
-## Schema Health Score: 9/10
+## Schema Health Score: 9.5/10
 
 ### Strengths
 - Multi-tenant (franchise_groups → restaurants, tenant_id on all core tables)
@@ -38,21 +38,22 @@
 - UUID PKs throughout, strong indexing (composite + partial indexes)
 - Outbox pattern + event-driven queues
 - RBAC complete (roles, permissions, role_permissions, user_restaurant_roles)
-- Inventory with FIFO batches + ledger + UOM conversions
-- Recipe/BOM with sub-recipes
+- Inventory with FIFO batches + ledger + UOM conversions + valuation MV
+- Recipe/BOM with sub-recipes + recipe costing snapshots + COGS MV
 - Finance with chart of accounts + double-entry transactions
 - POS staging with anomaly detection + WhatsApp HITL workflow
+- Materialized read models for sales, inventory, COGS, prime cost
+- Labor management (shifts, time_entries, labor_standards, labor_cost_actuals)
+- Procurement three-way matching (PO → Receipt → Invoice)
+- Menu versioning with seasonal menus and item pricing
+- Allergen & nutritional tracking on items
 
-### Critical Gaps (remaining after Phase 6)
-- **No labor management** — Prime cost = 0% tracked
-- **No menu engineering / versioning**
-- **No allergen/nutrition tracking**
+### Critical Gaps (remaining after Phase 7)
 - **No guest CRM / loyalty**
 - **No table management / reservations**
 - **No KDS foundation**
 - **No vendor portal / EDI**
 - **No commissary/central kitchen**
-- **Schedule/seasonal menus not supported**
 
 ### Technical Gotchas (Will Hurt Later)
 - `tenant_id` nullable on several tables — data integrity risk
@@ -129,21 +130,24 @@ Missing event store, projections, command/query separation, idempotent commands,
 - [x] 6.6 Menu engineering view (`mv_menu_item_performance`) — revenue & quantity per item
 - [x] Helper function `refresh_analytics_mvs()` to refresh all MVs concurrently
 
-### Phase 7: Domain Expansion (P1–P2)
-- [ ] 7.1 Labor management
-  - `shifts` (location, role, start/end, wage)
-  - `time_entries` (clock-in/out, breaks)
-  - `labor_standards` (scheduled labor % by revenue bucket)
-  - `labor_cost_actuals` (daily/weekly per location)
-- [ ] 7.2 Three-way match (procurement)
+### Phase 7: Domain Expansion ✅ COMPLETE
+- [x] 7.1 Labor management
+  - `shifts` (location, role, shift_date, start/end, wage)
+  - `time_entries` (clock-in/out, breaks, computed total_hours)
+  - `labor_standards` (target labor % by revenue bucket per role)
+  - `labor_cost_actuals` (daily/weekly aggregated labor cost per location)
+- [x] 7.2 Three-way match (procurement)
   - `goods_receipts` (receive against PO)
-  - `three_way_match_results` (PO vs Receipt vs Invoice)
-- [ ] 7.3 Menu versioning + seasonal menus
-  - `menu_versions` (effective_date_from, effective_date_to)
+  - `goods_receipt_items` (line-level receiving with accept/reject)
+  - `three_way_match_results` (PO vs Receipt vs Invoice with variance)
+- [x] 7.3 Menu versioning + seasonal menus
+  - `menu_versions` (effective_date_from, effective_date_to, is_active)
   - `menu_version_items` (menu_version_id, item_id, price, available)
-- [ ] 7.4 Allergen / dietary / nutrition on `items`
-  - `item_allergens` (item_id, allergen)
-  - `item_nutritionals` (item_id, serving_size, calories, fat, protein, carbs, sodium)
+- [x] 7.4 Allergen / dietary / nutrition on `items`
+  - `item_allergens` (item_id, allergen — unique per item)
+  - `item_nutritionals` (item_id, serving_size, calories, fat, protein, carbs, sodium, etc.)
+
+> **Note:** `mv_prime_cost` labor component now has live tables to draw from once populated.
 
 ### Phase 8: Guest Experience (P2)
 - [ ] 8.1 guest_profiles + CRM

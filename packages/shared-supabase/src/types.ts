@@ -15,6 +15,749 @@ export type Database = {
   }
   public: {
     Tables: {
+      shifts: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          role: string
+          shift_date: string
+          shift_start: string
+          shift_end: string
+          wage: number
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          role?: string | null
+          shift_date?: string | null
+          shift_start?: string | null
+          shift_end?: string | null
+          wage?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          role?: string | null
+          shift_date?: string | null
+          shift_start?: string | null
+          shift_end?: string | null
+          wage?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shifts_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shifts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shifts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "shifts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      time_entries: {
+        Row: {
+          id: string | null
+          shift_id: string | null
+          restaurant_id: string
+          employee_name: string
+          entry_date: string
+          clock_in: string
+          clock_out: string | null
+          break_start: string | null
+          break_end: string | null
+          total_hours: number
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          shift_id?: string | null
+          restaurant_id?: string | null
+          employee_name?: string | null
+          entry_date?: string | null
+          clock_in?: string | null
+          clock_out?: string | null
+          break_start?: string | null
+          break_end?: string | null
+          total_hours?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          shift_id?: string | null
+          restaurant_id?: string | null
+          employee_name?: string | null
+          entry_date?: string | null
+          clock_in?: string | null
+          clock_out?: string | null
+          break_start?: string | null
+          break_end?: string | null
+          total_hours?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_entries_shift_id_fkey",
+            columns: ["shift_id"],
+            isOneToOne: false,
+            referencedRelation: "shifts",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "time_entries_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      labor_standards: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          revenue_min: number
+          revenue_max: number | null
+          target_labor_percent: number
+          role: string | null
+          effective_from: string
+          effective_to: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          revenue_min?: number | null
+          revenue_max?: number | null
+          target_labor_percent?: number | null
+          role?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          revenue_min?: number | null
+          revenue_max?: number | null
+          target_labor_percent?: number | null
+          role?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "labor_standards_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_standards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_standards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_standards_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      labor_cost_actuals: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          period_start: string
+          period_end: string
+          total_hours: number
+          total_wages: number
+          revenue: number | null
+          labor_percent: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          period_start?: string | null
+          period_end?: string | null
+          total_hours?: number | null
+          total_wages?: number | null
+          revenue?: number | null
+          labor_percent?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          period_start?: string | null
+          period_end?: string | null
+          total_hours?: number | null
+          total_wages?: number | null
+          revenue?: number | null
+          labor_percent?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "labor_cost_actuals_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_cost_actuals_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_cost_actuals_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "labor_cost_actuals_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      goods_receipts: {
+        Row: {
+          id: string | null
+          po_id: string
+          restaurant_id: string
+          received_date: string
+          status: string
+          notes: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          po_id?: string | null
+          restaurant_id?: string | null
+          received_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          po_id?: string | null
+          restaurant_id?: string | null
+          received_date?: string | null
+          status?: string | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goods_receipts_po_id_fkey",
+            columns: ["po_id"],
+            isOneToOne: false,
+            referencedRelation: "purchase_orders",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipts_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipts_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      goods_receipt_items: {
+        Row: {
+          id: string | null
+          goods_receipt_id: string
+          po_line_item_id: string
+          item_id: string
+          quantity_received: number
+          quantity_accepted: number
+          quantity_rejected: number
+          rejection_reason: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          goods_receipt_id?: string | null
+          po_line_item_id?: string | null
+          item_id?: string | null
+          quantity_received?: number | null
+          quantity_accepted?: number | null
+          quantity_rejected?: number | null
+          rejection_reason?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          goods_receipt_id?: string | null
+          po_line_item_id?: string | null
+          item_id?: string | null
+          quantity_received?: number | null
+          quantity_accepted?: number | null
+          quantity_rejected?: number | null
+          rejection_reason?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "goods_receipt_items_goods_receipt_id_fkey",
+            columns: ["goods_receipt_id"],
+            isOneToOne: false,
+            referencedRelation: "goods_receipts",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipt_items_po_line_item_id_fkey",
+            columns: ["po_line_item_id"],
+            isOneToOne: false,
+            referencedRelation: "po_line_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipt_items_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipt_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "goods_receipt_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      three_way_match_results: {
+        Row: {
+          id: string | null
+          po_id: string
+          goods_receipt_id: string
+          invoice_id: string | null
+          po_line_item_id: string
+          status: string
+          po_quantity: number | null
+          received_quantity: number | null
+          invoice_quantity: number | null
+          po_price: number | null
+          invoice_price: number | null
+          variance_quantity: number | null
+          variance_price: number | null
+          notes: string | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          po_id?: string | null
+          goods_receipt_id?: string | null
+          invoice_id?: string | null
+          po_line_item_id?: string | null
+          status?: string | null
+          po_quantity?: number | null
+          received_quantity?: number | null
+          invoice_quantity?: number | null
+          po_price?: number | null
+          invoice_price?: number | null
+          variance_quantity?: number | null
+          variance_price?: number | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          po_id?: string | null
+          goods_receipt_id?: string | null
+          invoice_id?: string | null
+          po_line_item_id?: string | null
+          status?: string | null
+          po_quantity?: number | null
+          received_quantity?: number | null
+          invoice_quantity?: number | null
+          po_price?: number | null
+          invoice_price?: number | null
+          variance_quantity?: number | null
+          variance_price?: number | null
+          notes?: string | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "three_way_match_results_po_id_fkey",
+            columns: ["po_id"],
+            isOneToOne: false,
+            referencedRelation: "purchase_orders",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "three_way_match_results_goods_receipt_id_fkey",
+            columns: ["goods_receipt_id"],
+            isOneToOne: false,
+            referencedRelation: "goods_receipts",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "three_way_match_results_invoice_id_fkey",
+            columns: ["invoice_id"],
+            isOneToOne: false,
+            referencedRelation: "invoices",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "three_way_match_results_po_line_item_id_fkey",
+            columns: ["po_line_item_id"],
+            isOneToOne: false,
+            referencedRelation: "po_line_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      menu_versions: {
+        Row: {
+          id: string | null
+          restaurant_id: string
+          name: string
+          effective_from: string
+          effective_to: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          restaurant_id?: string | null
+          name?: string | null
+          effective_from?: string | null
+          effective_to?: string | null
+          is_active?: boolean | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_versions_restaurant_id_fkey",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "restaurants",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_versions_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_versions_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_versions_restaurant_id_fkey__locations",
+            columns: ["restaurant_id"],
+            isOneToOne: false,
+            referencedRelation: "locations",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      menu_version_items: {
+        Row: {
+          id: string | null
+          menu_version_id: string
+          item_id: string
+          price: number
+          available: boolean
+          sort_order: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          menu_version_id?: string | null
+          item_id?: string | null
+          price?: number | null
+          available?: boolean | null
+          sort_order?: number | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          menu_version_id?: string | null
+          item_id?: string | null
+          price?: number | null
+          available?: boolean | null
+          sort_order?: number | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_version_items_menu_version_id_fkey",
+            columns: ["menu_version_id"],
+            isOneToOne: false,
+            referencedRelation: "menu_versions",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_version_items_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_version_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "menu_version_items_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      item_allergens: {
+        Row: {
+          id: string | null
+          item_id: string
+          allergen: string
+          created_at: string
+        }
+        Insert: {
+          id?: string | null
+          item_id?: string | null
+          allergen?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          item_id?: string | null
+          allergen?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "item_allergens_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "item_allergens_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "item_allergens_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      item_nutritionals: {
+        Row: {
+          id: string | null
+          item_id: string
+          serving_size: string | null
+          calories: number | null
+          fat_g: number | null
+          saturated_fat_g: number | null
+          protein_g: number | null
+          carbs_g: number | null
+          fiber_g: number | null
+          sugar_g: number | null
+          sodium_mg: number | null
+          cholesterol_mg: number | null
+          created_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string | null
+          item_id?: string | null
+          serving_size?: string | null
+          calories?: number | null
+          fat_g?: number | null
+          saturated_fat_g?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fiber_g?: number | null
+          sugar_g?: number | null
+          sodium_mg?: number | null
+          cholesterol_mg?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string | null
+          item_id?: string | null
+          serving_size?: string | null
+          calories?: number | null
+          fat_g?: number | null
+          saturated_fat_g?: number | null
+          protein_g?: number | null
+          carbs_g?: number | null
+          fiber_g?: number | null
+          sugar_g?: number | null
+          sodium_mg?: number | null
+          cholesterol_mg?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "item_nutritionals_item_id_fkey",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "item_nutritionals_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "item_nutritionals_item_id_fkey__inventory_items",
+            columns: ["item_id"],
+            isOneToOne: false,
+            referencedRelation: "inventory_items",
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       recipe_cost_snapshots: {
         Row: {
           id: string | null
