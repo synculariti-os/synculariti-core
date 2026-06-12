@@ -198,7 +198,8 @@ Missing: NestJS command/query buses, event bus wiring (application layer).
 
 ### Phase 10b: Saga-Driven Workflows (Future — Formalise HITL & Multi-Step Processes)
 - [x] **10b.1 Three-way match (retrofit)** — wire existing `goods_receipts`/`three_way_match_results` triggers → `start_saga('procure_to_pay')`, `advance_saga('goods.receipt.confirmed')`, `advance_saga('invoice.match.verified')` / `fail_saga('invoice.match.failed')`
-- [x] **10b.11 Notification routing system** — `notification_rules` (event_type → role → channel), `notification_queue`, `notification_attempts` (per-recipient/channel tracking), `in_app_notifications` (persisted inbox), `user_notification_preferences` (opt-out + quiet hours). `route_notification()` RPC fans out to in-app + WhatsApp based on rules. IMS (NestJS) gap closed: IMS calls `route_notification()` via Supabase admin client. Auto-trigger on `domain_events` INSERT.
+- [x] **10b.11 Notification routing system** — `notification_rules`, `notification_queue`, `notification_attempts`, `in_app_notifications`, `user_notification_preferences`. `route_notification()` RPC fans out to in-app + WhatsApp. IMS→WhatsApp gap closed. Auto-trigger on `domain_events` INSERT.
+- [x] **10b.12 POS anomaly notification wired** — trigger on `pos_batch_uploads` → COMPLETED routes `pos.anomaly.detected` to manager_on_duty (WhatsApp + in-app) and uploader (in-app). Also `sales_import_batches` → COMPLETED/FAILED routes to uploader.
 - [ ] **10b.2 POS ingestion HITL** — anomalous `sales_import_rows` trigger WhatsApp outbox HITL flow → formalised as saga with `sales_import.submitted`, `.approved`, `.rejected` events
 - [ ] **10b.3 Inventory count variance approval** — count completes with variance → saga: `inventory.count.completed` → supervisor approval step → `inventory.batch.adjusted` or rollback
 - [ ] **10b.4 Receipt scanning → extraction → approval** — OCR receipt → saga with `receipt.scanned`, `.data_extracted`, `.approved`, `.rejected`; HITL on extraction confidence < threshold
@@ -210,6 +211,7 @@ Missing: NestJS command/query buses, event bus wiring (application layer).
 - [ ] **10b.10 Menu version publishing approval** — menu version `.staged` → HITL approval gate → `.published` or `.rolled_back`
 
 ### Phase 11: Shared UI & Production
+- [x] **11.0 Vercel deployment guide** — `Vercel.md` in project root covers all 3 apps (web, ET, ims-web), env vars with sourcing instructions, GitHub repo setup, domains, preview deployments, CI pipeline template, and IMS API Docker deployment
 - [ ] 11.1 Extract @synculariti/shared-ui from IMS + ET
 - [ ] 11.2 Unify design tokens (Tailwind @theme)
 - [ ] 11.3 Convert ET CSS modules → Tailwind
