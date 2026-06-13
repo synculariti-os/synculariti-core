@@ -6,7 +6,7 @@ services:
     dockerfilePath: ./Dockerfile
     plan: free
     region: frankfurt
-    healthCheckPath: /api/health
+    healthCheckPath: /health
     envVars:
       - key: SUPABASE_URL
         sync: false
