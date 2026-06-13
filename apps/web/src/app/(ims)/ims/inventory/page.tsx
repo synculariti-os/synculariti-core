@@ -10,7 +10,7 @@ export default function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState<'stock' | 'ledger'>('stock');
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] bg-[url('/grid.svg')] dark:bg-[url('/grid-dark.svg')] bg-center selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-[#0a0a0a] bg-grid-pattern dark:bg-grid-pattern-dark bg-center selection:bg-indigo-500/30">
       <main className="pt-32 pb-16 px-6">
         <div className="max-w-7xl mx-auto space-y-10">
           

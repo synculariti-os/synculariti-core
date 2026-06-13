@@ -573,3 +573,11 @@ body {
     display: none !important;
   }
 }
+
+.bg-grid-pattern {
+  background-image: url('/grid.svg');
+}
+
+.bg-grid-pattern-dark {
+  background-image: url('/grid-dark.svg');
+}
