@@ -1,6 +1,0 @@
-{
-  "installCommand": "cd ../.. && pnpm install --ignore-scripts --no-frozen-lockfile",
-  "buildCommand": "cd ../.. && pnpm build --filter=@synculariti/web",
-  "outputDirectory": "out",
-  "framework": "nextjs"
-}
