@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { IItemRepository } from './interfaces/i-item.repository';
 import type { CreateItemCommand, CreateCategoryCommand } from './interfaces/i-item.service';
 import { Kysely, sql } from 'kysely';
-import { Database, ItemWithOverride, ItemId, RestaurantId, UomConversion, Category, ItemRestaurantOverride, Item, asRestaurantId, asItemId, asCategoryId, asFranchiseGroupId } from '@synculariti/types';
+import { Database, ItemWithOverride, ItemId, RestaurantId, UomConversion, Category, ItemRestaurantOverride, Item, FranchiseGroupId, asRestaurantId, asItemId, asCategoryId, asFranchiseGroupId } from '@synculariti/types';
 import { v4 as uuidv4 } from 'uuid';
 import { UpdateItemDto, CreateCategoryDto, UpdateCategoryDto, CreateUomConversionDto, UpdateItemOverrideDto } from '@synculariti/validators';
 
@@ -11,11 +11,12 @@ import { UpdateItemDto, CreateCategoryDto, UpdateCategoryDto, CreateUomConversio
 export class ItemRepository implements IItemRepository {
   constructor(@Inject('DB_CLIENT') private readonly db: Kysely<Database>) {}
 
-  async findByIdRaw(itemId: ItemId): Promise<Item | null> {
+  async findByIdRaw(itemId: ItemId, franchiseGroupId?: FranchiseGroupId): Promise<Item | null> {
     const item = await this.db
       .selectFrom('items')
       .selectAll()
       .where('id', '=', itemId)
+      .$if(!!franchiseGroupId, (qb) => qb.where('franchise_group_id', '=', franchiseGroupId!))
       .executeTakeFirst();
     if (!item) return null;
     return this.mapItemRecord(item);

@@ -1,4 +1,4 @@
-import { Injectable, Inject, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { Kysely } from 'kysely';
 import { randomUUID } from 'crypto';
 import {
@@ -58,12 +58,15 @@ export class InventoryCountRepository implements IInventoryCountRepository {
     return this.mapBatch(row);
   }
 
-  async findBatchById(batchId: CountBatchId): Promise<InventoryCountBatch | null> {
-    const row = await this.db
+  async findBatchById(batchId: CountBatchId, restaurantId?: RestaurantId): Promise<InventoryCountBatch | null> {
+    let query = this.db
       .selectFrom('inventory_count_batches')
       .selectAll()
-      .where('id', '=', batchId)
-      .executeTakeFirst();
+      .where('id', '=', batchId);
+    if (restaurantId) {
+      query = query.where('restaurant_id', '=', restaurantId);
+    }
+    const row = await query.executeTakeFirst();
       
     return row ? this.mapBatch(row) : null;
   }
@@ -99,12 +102,16 @@ export class InventoryCountRepository implements IInventoryCountRepository {
     return res.numUpdatedRows > 0n;
   }
 
-  async findRowsByBatchId(batchId: CountBatchId): Promise<InventoryCountRow[]> {
-    const rows = await this.db
-      .selectFrom('inventory_count_rows')
-      .selectAll()
-      .where('batch_id', '=', batchId)
-      .execute();
+  async findRowsByBatchId(batchId: CountBatchId, restaurantId?: RestaurantId): Promise<InventoryCountRow[]> {
+    let query = this.db
+      .selectFrom('inventory_count_rows as cr')
+      .innerJoin('inventory_count_batches as cb', 'cb.id', 'cr.batch_id')
+      .selectAll('cr')
+      .where('cr.batch_id', '=', batchId);
+    if (restaurantId) {
+      query = query.where('cb.restaurant_id', '=', restaurantId);
+    }
+    const rows = await query.execute();
       
     return rows.map(r => this.mapRow(r));
   }

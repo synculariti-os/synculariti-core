@@ -1,4 +1,4 @@
-import type { PermissionCode, JwtPayload, SafeUser, UserId, RestaurantId } from '@synculariti/types';
+import type { PermissionCode, JwtPayload, SafeUser, UserId, RestaurantId, FranchiseGroupId } from '@synculariti/types';
 import type { UpdateProfileInput } from './i-user.repository';
 
 export interface IAuthService {
@@ -7,6 +7,7 @@ export interface IAuthService {
   resolvePermissions(userId: UserId, restaurantId: RestaurantId): Promise<PermissionCode[]>;
   getProfile(userId: UserId): Promise<SafeUser>;
   updateProfile(userId: UserId, dto: UpdateProfileInput): Promise<SafeUser>;
+  sudoTenant(userId: UserId, franchiseGroupId: FranchiseGroupId, restaurantId: RestaurantId): Promise<JwtPayload>;
 }
 
 export const AUTH_SERVICE_TOKEN = Symbol('IAuthService');

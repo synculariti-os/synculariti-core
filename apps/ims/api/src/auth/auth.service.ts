@@ -7,7 +7,8 @@ import {
 } from '@nestjs/common';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-import type { JwtPayload, SafeUser, UserId, RestaurantId, PermissionCode } from '@synculariti/types';
+import type { JwtPayload, SafeUser, UserId, RestaurantId, FranchiseGroupId, PermissionCode } from '@synculariti/types';
+import { PERMISSION_CODES } from '@synculariti/types';
 import type { IAuthService } from './interfaces/i-auth.service';
 import type { IUserRepository, UpdateProfileInput } from './interfaces/i-user.repository';
 import type { IPermissionRepository } from './interfaces/i-permission.repository';
@@ -101,5 +102,24 @@ export class AuthService implements IAuthService {
 
   async updateProfile(userId: UserId, dto: UpdateProfileInput): Promise<SafeUser> {
     return this.userRepo.updateProfile(userId, dto);
+  }
+
+  async sudoTenant(userId: UserId, franchiseGroupId: FranchiseGroupId, restaurantId: RestaurantId): Promise<JwtPayload> {
+    const publicUser = await this.userRepo.findById(userId);
+    if (!publicUser) {
+      throw new UnauthorizedException('User profile not found');
+    }
+
+    const allPermissions = Object.values(PERMISSION_CODES);
+
+    void this.userRepo.updateLastLogin(userId);
+
+    return {
+      sub: userId,
+      email: publicUser.email,
+      restaurantId,
+      franchiseGroupId,
+      permissions: allPermissions,
+    };
   }
 }

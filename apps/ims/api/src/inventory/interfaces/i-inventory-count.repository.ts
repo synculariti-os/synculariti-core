@@ -17,7 +17,7 @@ export interface ExportRow extends InventoryCountRow {
 
 export interface IInventoryCountRepository {
   createBatch(db: unknown, restaurantId: RestaurantId): Promise<InventoryCountBatch>;
-  findBatchById(batchId: CountBatchId): Promise<InventoryCountBatch | null>;
+  findBatchById(batchId: CountBatchId, restaurantId?: RestaurantId): Promise<InventoryCountBatch | null>;
   findOpenBatchByRestaurant(restaurantId: RestaurantId): Promise<InventoryCountBatch | null>;
   updateBatchStatus(
     trx: unknown,
@@ -25,7 +25,7 @@ export interface IInventoryCountRepository {
     status: string,
     version: number,
   ): Promise<boolean>; // returns false on optimistic lock failure
-  findRowsByBatchId(batchId: CountBatchId): Promise<InventoryCountRow[]>;
+  findRowsByBatchId(batchId: CountBatchId, restaurantId?: RestaurantId): Promise<InventoryCountRow[]>;
   findRowsWithItemName(batchId: CountBatchId): Promise<ExportRow[]>;
   updateCountRow(
     db: unknown,

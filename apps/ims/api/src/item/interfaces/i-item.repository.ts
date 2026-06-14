@@ -1,4 +1,4 @@
-import type { Item, ItemWithOverride, ItemId, RestaurantId, UomConversion, Category, ItemRestaurantOverride } from '@synculariti/types';
+import type { Item, ItemWithOverride, ItemId, RestaurantId, FranchiseGroupId, UomConversion, Category, ItemRestaurantOverride } from '@synculariti/types';
 import type { 
   UpdateItemDto, 
   CreateCategoryDto, 
@@ -10,7 +10,7 @@ import type { CreateItemCommand, CreateCategoryCommand } from './i-item.service'
 
 export interface IItemRepository {
   findById(itemId: ItemId, restaurantId: RestaurantId): Promise<ItemWithOverride | null>;
-  findByIdRaw(itemId: ItemId): Promise<Item | null>;
+  findByIdRaw(itemId: ItemId, franchiseGroupId?: FranchiseGroupId): Promise<Item | null>;
   findBySku(sku: string, restaurantId: RestaurantId): Promise<Item | null>;
   getUomConversion(itemId: ItemId, fromUom: string, toUom: string): Promise<UomConversion | null>;
   listParLevels(restaurantId: RestaurantId, page?: number, limit?: number): Promise<{ data: ItemWithOverride[]; meta: { total: number; page: number; limit: number; totalPages: number } }>;
