@@ -22,6 +22,7 @@ import { ReportingModule } from './reporting/reporting.module';
 import { AuditModule } from './audit/audit.module';
 import { SettingsModule } from './settings/settings.module';
 import { ExternalModule } from './external/external.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 const redisUrl = process.env.REDIS_URL ? new URL(process.env.REDIS_URL) : null;
 const spaPath = process.env.SPA_PATH || join(__dirname, '..', '..', '..', 'web', 'out');
@@ -63,6 +64,7 @@ const spaPath = process.env.SPA_PATH || join(__dirname, '..', '..', '..', 'web',
     AuditModule,
     SettingsModule,
     ExternalModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [

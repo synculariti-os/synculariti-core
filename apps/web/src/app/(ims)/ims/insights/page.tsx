@@ -7,6 +7,7 @@ import {
   Layers, ShieldAlert,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/use-auth-store';
+import { apiClient } from '@/lib/api-client';
 
 interface WaterfallStep {
   label: string;
@@ -142,12 +143,10 @@ export default function InsightsPage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [wfRes, tunRes] = await Promise.all([
-        fetch(`/api/insights/waterfall?mode=${mode}`),
-        fetch(`/api/insights/tunnel?mode=${mode}`),
-      ]);
-      if (wfRes.ok) setWaterfall(await wfRes.json());
-      if (tunRes.ok) setTunnel(await tunRes.json());
+      const wfData = await apiClient<any>(`/analytics/waterfall?mode=${mode}`).catch(() => null);
+      if (wfData?.data) setWaterfall(wfData.data);
+      const tunData = await apiClient<any>(`/analytics/tunnel?mode=${mode}`).catch(() => null);
+      if (tunData?.data) setTunnel(tunData.data);
     } catch (e) {
       console.error('Fetch error:', e);
     }
@@ -163,11 +162,8 @@ export default function InsightsPage() {
       return;
     }
     try {
-      const res = await fetch(`/api/insights/tunnel?mode=${mode}&category_id=${catId}`);
-      if (res.ok) {
-        const data = await res.json();
-        setDrillItems(data.category?.items || null);
-      }
+      const data = await apiClient<any>(`/analytics/tunnel?mode=${mode}&category_id=${catId}`).catch(() => null);
+      setDrillItems(data?.data?.items || null);
     } catch { setDrillItems(null); }
   };
 
